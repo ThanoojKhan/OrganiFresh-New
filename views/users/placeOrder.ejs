@@ -1,0 +1,194 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+
+<style>.button {
+    cursor: pointer;
+  }
+  
+  .button__text {
+    transition: all 0.2s!important;
+  }
+  
+  .button--loading .button__text {
+    visibility: hidden!important;
+    opacity: 0!important;
+  }
+  
+  .button--loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #8b2020;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+  }
+  
+  @keyframes button-loading-spinner {
+    from {
+      transform: rotate(0turn);
+    }
+  
+    to {
+      transform: rotate(1turn);
+    }
+  }</style>
+
+    <div class="container d-flex justify-content-center mt-5 mb-5 ftco-animate">
+        <div class="col mt-5">
+            <form action="/orderConfirm" method="post">
+                <div class="d-flex justify-content-center" style="justify-content: start;">
+                    <div class="col-md-6 ftco-animate">
+                        <span><b> Payment Method</b></span>
+                        <div class="card mt-3 ">
+                            <div class="accordion" id="accordionExample">
+
+                                <%if(walletPay==true){%>
+
+
+                                    <div class="card" style="justify-content: space-between;">
+                                        <div class="card-header p-0" id="">
+                                            <h2 class="mb-0">
+                                                <button
+                                                    class="btn btn-light btn-block text-left  p-3 rounded-0 border-bottom-custom"
+                                                    type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                    <div class="d-flex justify-content-center ">
+
+                                                        <label class="form-check-label"
+                                                            for="flexRadioDefault1"><br><span><input
+                                                                    class="form-check-input" type="radio" value="Wallet"
+                                                                    name="flexRadioDefault"
+                                                                    id="flexRadioDefault1">Wallet</span><br>
+                                                                    <small>*Faster Checkout</small>
+                                                        </label>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                        </div>
+                                    </div>
+
+
+                                    <%}else{%>
+
+                                        <div class="card" style="justify-content: space-between;">
+                                            <div class="card-header p-0" id="">
+                                                <h2 class="mb-0">
+                                                    <button
+                                                        class="btn btn-light btn-block text-left  p-3 rounded-0 border-bottom-custom"
+                                                        type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                                        aria-expanded="false" aria-controls="collapseTwo">
+                                                        <div class="d-flex justify-content-center ">
+
+                                                            <label class="form-check-label"
+                                                                for="flexRadioDefault1"><br><span><input
+                                                                        class="form-check-input" type="radio"
+                                                                        value="cashOn" name="flexRadioDefault"
+                                                                        id="flexRadioDefault1"> Cash On
+                                                                    Delivery</span>
+                                                            </label>
+                                                        </div>
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                            <div class="card" style="justify-content: space-between;">
+                                                <div class="card-header p-0" id="">
+                                                    <h2 class="mb-0">
+                                                        <button
+                                                            class="btn btn-light btn-block text-left  p-3 rounded-0 border-bottom-custom"
+                                                            type="button" data-toggle="collapse"
+                                                            data-target="#collapseTwo" aria-expanded="false"
+                                                            aria-controls="collapseTwo">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <label class="form-check-label"
+                                                                    for="flexRadioDefault1"><br><span><input
+                                                                            class="form-check-input" type="radio"
+                                                                            value="online" name="flexRadioDefault"
+                                                                            id="flexRadioDefault1">Paypal</span>
+                                                                </label>
+                                                                <img class="ml-5 mt-3"
+                                                                    src="https://i.imgur.com/7kQEsHU.png" width="30">
+                                                            </div>
+                                                        </button>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                            <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center " style="justify-content: end;">
+                    <div class="col-md-6 ftco-animate"><br>
+                        <span><b>Order Summary</b></span>
+                        <div class="card mt-3 mb-5">
+                            <div class="d-flex justify-content-between p-3">
+                                <div class="d-flex flex-column">
+                                    <span>Order Amount(Rs. ) </span>
+                                </div>
+                                <div class="mt-1">
+                                    <h6><b>
+                                            <%=pro.totalPrice%>
+                                        </b></h6>
+                                </div>
+                            </div>
+                            <hr class="mt-0 line">
+
+                            <div class="d-flex justify-content-between p-3">
+                                <div class="d-flex flex-column">
+                                    <span>Wallet Balance(Rs. ) </span>
+                                </div>
+                                <div class="mt-1">
+                                    <h6><b>
+                                            <%=wallet%>
+                                        </b></h6>
+                                </div>
+                            </div>
+                            <hr class="mt-0 line">
+                            <div class="p-3 d-flex justify-content-between">
+                                <div class="d-flex flex-column">
+                                    <span><b>Amount Payable</b></span>
+                                </div>
+                                <h5>Rs. &nbsp; <b>
+                                        <%=Total%>&nbsp;/-
+                                    </b></h5>
+                            </div>
+                            <div class="p-3 ftco-animate">
+                                <button type="submit" class="btn btn-primary btn-block free-button button" onclick="this.classList.toggle('button--loading')"><span class="button__text">Proceed</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%if(message!=null){ %>
+        <script>
+            new Swal({
+                title: "Success",
+                text: "<%=message%>",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+        <%}%>
+            <%if(msg){%>
+                <script>
+                    new Swal({
+                        title: "",
+                        text: "<%=msg%>",
+                        icon: "error",
+                    });
+                </script>
+                <%}%>
+
+                    <%- include('../layouts/userFooternull.ejs') %>

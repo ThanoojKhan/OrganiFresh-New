@@ -1,0 +1,840 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+  <body id="reportsPage">
+    <div class="" id="home">
+      <nav class="navbar navbar-expand-xl">
+        <div class="container h-100 ">
+          <a class="navbar-brand" href="/admin/home">
+            <h1 class="tm-site-title mb-0 font">OrganiFresh</h1>
+          </a>
+          <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-justify" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+              </svg></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto h-100">
+              <li class="nav-item">
+                <a class="nav-link active" href="/admin/home">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-speedometer2" viewBox="0 0 16 16">
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z" />
+                      <path fill-rule="evenodd"
+                        d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z" />
+                    </svg></i>
+                  Dashboard
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/userData">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                    </svg></i>
+                  User Data
+                  <span class="sr-only"></span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/addProduct">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-capslock" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM14.346 8.5 8 1.731 1.654 8.5H4.5a1 1 0 0 1 1 1v1h5v-1a1 1 0 0 1 1-1h2.846zm-9.846 5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1zm6 0h-5v1h5v-1z" />
+                    </svg></i>
+                  Add Product
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/products">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-box-seam" viewBox="0 0 16 16">
+                      <path
+                        d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                    </svg></i>
+                  Products
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/category">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-c-square-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm6.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z" />
+                    </svg></i>
+                  Category
+                </a>
+              </li>
+            
+              <li class="nav-item dropdown mt-3">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                    <span>
+                        More <i class="fas fa-angle-down"></i>
+                    </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/admin/coupon">Coupon</a>
+                    <a class="dropdown-item" href="/admin/banner">Home Page Controls</a>
+                    <a class="dropdown-item" href="/admin/salesReport">Sales Report</a>
+                </div>
+            </li>
+
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link d-block" href="/admin/logout">
+                  <b>Logout</b>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        
+        <div class="row justify-content-end">
+          <div class="col">
+            <p class="text-white mt-5" id="time"></p>
+          </div>
+          <div class="col d-flex justify-content-end align-items-center mr-3">
+            <p class="text-white mt-5" id="date"></p>
+          </div>
+        </div>
+
+        <div class="row justify-content-end">
+          <div class="col">
+            <p class="text-white mb-1">Welcome back, <b>Admin</b></p>
+          </div>
+          <div class="col d-flex justify-content-end align-items-center mr-3">
+            <a href="/admin/salesReport" class="btn btn-primary ">Sales Report</a>
+          </div>
+        </div>
+
+        <div class="container-fluid py-4">
+          <div class="row">
+            <%if(dailySalesReport!=0){%>
+              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4 ">
+                <div class="card bg-dark shadow">
+                  <div class="card-header p-3 pt-2">
+                    <div class="text-end pt-1 text-white">
+                      <p class="text-sm mb-0 text-capitalize text-white">Today's Sales</p>
+                      <h4 class="mb-0">₹ <%=dailySalesReport[0].totalSales%>
+                      </h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0 text-white"><span class="text-success text-sm font-weight-bolder">
+                        <%=dailySalesReport[0].totalItemsSold%>
+                      </span> - Products sold today</p>
+                  </div>
+                </div>
+              </div>
+              <%}else{%>
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                  <div class="card text-white bg-dark">
+                    <div class="card-header p-3 pt-2">
+                      <div class="text-end pt-1 text-white">
+                        <p class="text-sm mb-0 text-capitalize text-white">Today's Sales</p>
+                        <h4 class="mb-0">₹ 0</h4>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer p-3">
+                      <p class="mb-0 text-white"><span class="text-success text-sm font-weight-bolder">0</span> -
+                        Producs
+                        sold today</p>
+                    </div>
+                  </div>
+                </div>
+                <%}%>
+                  <%if(weeklySalesReport!=0){%>
+                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                      <div class="card text-white bg-dark">
+                        <div class="card-header p-3 pt-2">
+                          <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">Weekly Sales</p>
+                            <h4 class="mb-0">₹ <%= weeklySalesReport[0].totalSales %>
+                            </h4>
+                          </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                          <p class="mb-0"><span class="text-success text-sm font-weight-bolder">
+                              <%= weeklySalesReport[0].totalItemsSold%>
+                            </span> - Products sold this week</p>
+                        </div>
+                      </div>
+                    </div>
+                    <%}else{%>
+                      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                        <div class="card text-white bg-dark">
+                          <div class="card-header p-3 pt-2">
+                            <div class="text-end pt-1">
+                              <p class="text-sm mb-0 text-capitalize">Weekly Sales</p>
+                              <h4 class="mb-0">₹ 0
+                              </h4>
+                            </div>
+                          </div>
+                          <hr class="dark horizontal my-0">
+                          <div class="card-footer p-3">
+                            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">
+                                0
+                              </span> - Products sold this week</p>
+                          </div>
+                        </div>
+                      </div>
+                      <%}%>
+
+                        <%if(yearlySalesReport!=0){%>
+                          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                            <div class="card text-white bg-dark">
+                              <div class="card-header p-3 pt-2">
+                                <div class="text-end pt-1">
+                                  <p class="text-sm mb-0 text-capitalize">Yearly sales report</p>
+                                  <h4 class="mb-0">₹ <%=yearlySalesReport[0].totalSales%>
+                                  </h4>
+                                </div>
+                              </div>
+                              <hr class="dark horizontal my-0">
+                              <div class="card-footer p-3">
+                                <p class="mb-0"><span class="text-success text-sm font-weight-bolder">
+                                    <%= yearlySalesReport[0].totalItemsSold %>
+                                  </span> - Products sold this year</p>
+                              </div>
+                            </div>
+                          </div>
+                          <%}else{%>
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                              <div class="card text-white bg-dark">
+                                <div class="card-header p-3 pt-2">
+                                  <div class="text-end pt-1">
+                                    <p class="text-sm mb-0 text-capitalize">Yearly sales report</p>
+                                    <h4 class="mb-0">₹ 0
+                                    </h4>
+                                  </div>
+                                </div>
+                                <hr class="dark horizontal my-0">
+                                <div class="card-footer p-3">
+                                  <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">
+                                      0
+                                    </span> - Products sold this year</p>
+                                </div>
+                              </div>
+                            </div>
+                            <%}%>
+
+                              <div class="col-xl-3 col-sm-6 ">
+                                <div class="card text-white bg-dark">
+                                  <div class="card-header p-3 pt-2">
+                                    <div class="text-end pt-1">
+                                      <p class="text-sm mb-0 text-capitalize">Users</p>
+                                      <h4 class="mb-0">
+                                        <%=usersLength-1%>
+                                      </h4>
+                                    </div>
+                                  </div>
+                                  <hr class="dark horizontal my-0">
+                                  <div class="card-footer p-3">
+                                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+5% </span> -
+                                      than
+                                      previous month</p>
+                                  </div>
+                                </div>
+                              </div>
+          </div>
+        </div>
+
+<!-- Line Chart -->
+
+
+
+<div class="container" >
+<div class="row tm-content-row">
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+      <div class="tm-bg-primary-dark tm-block">
+          <h2 class="tm-block-title">Sales Chart</h2>
+          <div class="" style="background-color: #394e64;" id="reportsChart"></div>
+        </div>
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+      <div class="tm-bg-primary-dark tm-block">
+          <h2 class="tm-block-title">Product Sales</h2>
+          <div class="" style="background-color: #394e64;" id="productsReport"></div>
+      </div>
+  </div>
+</div>
+</div>
+
+        <%if(orders!=0){ %>
+          <div class="col-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+              <h2 class="tm-block-title">Orders List</h2>
+              <table class="table text-center ">
+                <thead>
+                  <tr class="">
+                    <th scope="col">ORDER NO.</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">USER</th>
+                    <th scope="col">LOCATION</th>
+                    <th scope="col"class="">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <%for(let i=0;i<orders.length;i++){%>
+                    <%if(orders[i].user_cancelled==true||orders[i].admin_cancelled==true){%>
+                      <tr >
+                        <th scope="row"><b>
+                            <%=orders[i].orderCount%>
+                          </b></th>
+                        <td>
+                          <div class="tm-status-circle cancelled">
+                          </div>Cancelled
+                        </td>
+                        <td><b>
+                            <%=orders[i].userId.username%>
+                          </b></td>
+                        <td><b>
+                            <%=orders[i].address[0].city%>
+                          </b></td>
+                          
+                        <td class="d-flex justify-content-center">
+                          <button type="button" class=" btn btn-sm rounded-pill btn-success" data-toggle="modal"
+                          data-target="#deleteProduct<%= orders[i]._id %>">View
+                        </button>
+
+                                <div class="modal fade" id="deleteProduct<%= orders[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteProductLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body text-dark">
+                                        <section class="">
+                                          <div class="container ">
+                                            <div class="row d-flex justify-content-center align-items-center">
+                                              <div class="col-12">
+                                                    <p class="fw-bold mb-5" style="color: #f37a27;">Order details</p>
+                                                   <div class="row">
+                                                      <div class="col mb-3">
+                                                        <p class="small text-muted mb-1">Start Date</p>
+                                                        <p><%=orders[i].start_date%></p>
+                                                      </div>
+                                                      <div class="col mb-3">
+                                                        <p class="small text-muted mb-1">Order No.</p>
+                                                        <p><%=orders[i].orderCount%></p>
+                                                      </div>
+                                                    </div>
+                                                    
+                                       
+                                                    <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                                                      <div class="row">
+                                                        <% let price = 0 %>
+                                                        <%orders[i].item.forEach(item => {%>
+                                                                <div class="col-md-8 col-lg-9">
+                                                                  <p><%=item.product.title%></p>
+                                                                </div>
+                                                                <div class="col-md-4 col-lg-3">
+                                                                  <% price += item.price*item.quantity %>
+                                                                  <p>₹ <%=item.price*item.quantity%>
+                                                                </div>
+                                                        <%})%>
+                                                             
+                                                      </div>
+                                                      <div class="row">
+                                                        <div class="col-md-8 col-lg-9">
+                                                          <p class="fw-bold mb-0" >Discount</p>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-3">
+                                                          <p class="fw-bold mb-0" >₹ <%=price - parseInt(orders[i].totalPrice)%></p>
+                                                        </div>
+                                                      </div>
+                                                      <div class="row">
+                                                        <div class="col-md-8 col-lg-9">
+                                                          <p class="fw-bold mb-0" style="color: #f37a27;">Total</p>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-3">
+                                                          <p class="fw-bold mb-0" style="color: #f37a27;">₹ <%=parseInt(orders[i].totalPrice)%></p>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                        
+                                                   
+                                        
+                                                    <p class=" fw-bold mb-2 mt-2 pb-2" style="color: #f37a27;">Tracking Order</p>
+                                        
+                                                    <div class="row">
+                                                      <div class="col-lg-12">
+                                        
+                                                        <div class="horizontal-timeline">
+                                        
+                                                          <ul class="list-inline items d-flex justify-content-between">
+                                                            <li class="list-inline-item items-list">
+                                                              <p class=" py-1 px-2 rounded text-white" style="background-color: #f37a27;">Ordered</p>
+                                                            </li>
+                                                            <li class="list-inline-item items-list">
+                                                              <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Shipped</p>
+                                                            </li>
+                                                            <li class="list-inline-item items-list">
+                                                              <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">On the way
+                                                              </p>
+                                                            </li>
+                                                            <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                                              <p style="margin-right: -8px;">Delivered</p>
+                                                            </li>
+                                                          </ul>
+                                        
+                                                        </div>
+                                        
+                                                      </div>
+                                                    </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </section>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                        </td>
+                      </tr>
+                      <%}else if(orders[i].is_delivered==true){%>
+                        <tr>
+                          <th scope="row"><b>
+                              <%=orders[i].orderCount%>
+                            </b></th>
+                          <td>
+                            <div class="tm-status-circle moving">
+                            </div>Delivered
+                          </td>
+                          <td><b>
+                              <%=orders[i].userId.username%>
+                            </b></td>
+                          <td><b>
+                              <%=orders[i].address[0].city%>
+                            </b></td>
+                          <td class="d-flex justify-content-center">
+                            <div class="box-1">
+                              <div class="btn1 btn-on ">
+                                <button type="button" class=" btn btn-sm rounded-pill btn-success" data-toggle="modal"
+                                  data-target="#deleteProduct<%= orders[i]._id %>">View
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="modal fade " id="deleteProduct<%= orders[i]._id %>" data-bs-backdrop="static"
+                              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                              aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body text-dark">
+                                    <section class="">
+                                      <div class="container ">
+                                        <div class="row d-flex justify-content-center align-items-center">
+                                          <div class="col-12">
+                                            <p class="fw-bold mb-5" style="color: #f37a27;">Order details</p>
+                                            <div class="row">
+                                              <div class="col mb-3">
+                                                <p class="small text-muted mb-1">Start Date</p>
+                                                <p>
+                                                  <%=orders[i].start_date%>
+                                                </p>
+                                              </div>
+                                              <div class="col mb-3">
+                                                <p class="small text-muted mb-1">Order No.</p>
+                                                <p>
+                                                  <%=orders[i].orderCount%>
+                                                </p>
+                                              </div>
+                                            </div>
+
+                                            <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                                              <div class="row">
+                                                <%orders[i].item.forEach(item=> {%>
+                                                  <div class="col-md-8 col-lg-9">
+                                                    <p>
+                                                      <%=item.product.title%>
+                                                    </p>
+                                                  </div>
+                                                  <div class="col-md-4 col-lg-3">
+                                                    <p>₹ <%=item.price*item.quantity%>
+                                                    </p>
+                                                  </div>
+                                                  <%})%>
+
+                                              </div>
+                                              <div class="row mb-2">
+                                                <div class="col-md-8 col-lg-9">
+                                                  <p class="mb-0">Shipping</p>
+                                                </div>
+                                                <div class="col-md-4 col-lg-3">
+                                                  <p class="mb-0">₹ 40.00</p>
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-md-8 col-lg-9">
+                                                  <p class="fw-bold mb-0" style="color: #f37a27;">Total</p>
+                                                </div>
+                                                <div class="col-md-4 col-lg-3">
+                                                  <p class="fw-bold mb-0" style="color: #f37a27;">₹ <%=
+                                                      orders[i].totalPrice %>
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            <p class=" fw-bold mb-4 pb-2" style="color: #f37a27;">Tracking Order</p>
+                                            <div class="row">
+                                              <div class="col-lg-12">
+                                                <div class="horizontal-timeline">
+                                                  <ul class="list-inline items d-flex justify-content-between">
+                                                    <li class="list-inline-item items-list">
+                                                      <p class=" rounded text-white" style="background-color: #f37a27;">
+                                                        Ordered</p>
+                                                    </li>
+                                                    <li class="list-inline-item items-list">
+                                                      <p class=" rounded text-white" style="background-color: #f37a27;">
+                                                        Shipped</p>
+                                                    </li>
+                                                    <li class="list-inline-item items-list">
+                                                      <p class="rounded text-white" style="background-color: #f37a27;">
+                                                        On the way
+                                                      </p>
+                                                    </li>
+                                                    <li class="list-inline-item items-list text-end">
+                                                      <p class="rounded text-white" style="background-color: #f37a27;">
+                                                        Delivered</p>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </section>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <%}else{%>
+                          <tr>
+                            <th scope="row"><b>
+                                <%=orders[i].orderCount%>
+                              </b></th>
+                            <td>
+                              <div class="tm-status-circle pending">
+                              </div>Pending
+                            </td>
+                            <td><b>
+                                <%=orders[i].userId.username%>
+                              </b></td>
+                            <td><b>
+                                <%=orders[i].address[0].city%>
+                              </b></td>
+                            <td class="d-flex justify-content-center">
+                              <%if(orders[i].admin_cancelled===false&&orders[i].is_delivered===false&&orders[i].user_cancelled===false){%>
+                                <div class="d-flex align-items-center ml-5">
+                                <a href="/admin/cancelOrder?orderid=<%=orders[i]._id%>"
+                                  class="btn btn-danger " style="height: 40px; border-radius: 30px; width: 100px;">Cancel</a>
+                                <a class="btn btn-warning ml-3" style="height: 40px; border-radius: 30px; width: 100px;"
+                                  href="/admin/orderStatus?orderid=<%=orders[i]._id%>">Delivered</a>
+
+                                <div class="box-1">
+                                  <div class="btn1  ml-3 ">
+                                    <button type="button" class=" btn btn-sm rounded-pill btn-success" data-toggle="modal"
+                                  data-target="#deleteProduct<%= orders[i]._id %>">View
+                                </button>
+                                  </div>
+                                </div>
+                              </div>
+
+                                <div class="modal fade " id="deleteProduct<%= orders[i]._id %>"
+                                  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                          aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body text-dark">
+                                        <section class="">
+                                          <div class="container ">
+                                            <div class="row d-flex justify-content-center align-items-center">
+                                              <div class="col-12">
+                                                <p class="fw-bold mb-5" style="color: #f37a27;">Order details</p>
+                                                <div class="row">
+                                                  <div class="col mb-3">
+                                                    <p class="small text-muted mb-1">Start Date</p>
+                                                    <p>
+                                                      <%=orders[i].start_date%>
+                                                    </p>
+                                                  </div>
+                                                  <div class="col mb-3">
+                                                    <p class="small text-muted mb-1">Order No.</p>
+                                                    <p>
+                                                      <%=orders[i].orderCount%>
+                                                    </p>
+                                                  </div>
+                                                </div>
+
+                                                <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
+                                                  <div class="row">
+                                                    <%orders[i].item.forEach(item=> {%>
+                                                      <div class="col-md-8 col-lg-9">
+                                                        <p>
+                                                          <%=item.product.title%>
+                                                        </p>
+                                                      </div>
+                                                      <div class="col-md-4 col-lg-3">
+                                                        <p>₹ <%=item.price*item.quantity%>
+                                                        </p>
+                                                      </div>
+                                                      <%})%>
+                                                  </div>
+
+                                                  <div class="row mb-2">
+                                                    <div class="col-md-8 col-lg-9">
+                                                      <p class="mb-0">Shipping</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-lg-3">
+                                                      <p class="mb-0">₹ 40.00</p>
+                                                    </div>
+                                                  </div>
+                                                  <div class="row">
+                                                    <div class="col-md-8 col-lg-9">
+                                                      <p class="fw-bold mb-0" style="color: #f37a27;">Total</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-lg-3">
+                                                      <p class="fw-bold mb-0" style="color: #f37a27;">₹ <%=orders[i].totalPrice %>
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                <p class=" fw-bold mb-4 pb-2" style="color: #f37a27;">Tracking Order</p>
+                                                <div class="row">
+                                                  <div class="col-lg-12">
+                                                    <div class="horizontal-timeline">
+                                                      <ul class="list-inline items d-flex justify-content-between">
+                                                        <li class="list-inline-item items-list">
+                                                          <p class=" rounded text-white"
+                                                            style="background-color: #f37a27;">Ordered</p>
+                                                        </li>
+                                                        <li class="list-inline-item items-list">
+                                                          <p class=" rounded text-white"
+                                                            style="background-color: #f37a27;">Shipped</p>
+                                                        </li>
+                                                        <li class="list-inline-item items-list">
+                                                          <p class="rounded text-white"
+                                                            style="background-color: #f37a27;">On the way
+                                                          </p>
+                                                        </li>
+                                                        <li class="list-inline-item items-list text-end"
+                                                          style="margin-right: 8px;">
+                                                          <p style="margin-right: -8px;">Delivered</p>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </section>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <%}%>
+                            </td>
+                          </tr>
+                          <%}%>
+                            <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <%}%>
+      </div>
+    </div>
+    </div>
+  </body>
+  <%if(message){%>
+    <script>
+      new Swal({
+        title: "Success",
+        text: "<%=message%>",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000
+      });
+    </script>
+    <%}%>
+
+    <script>
+      function updateTime() {
+        var currentTime = new Date();
+        var hours = currentTime.getHours();
+        var minutes = currentTime.getMinutes();
+        var seconds = currentTime.getSeconds();
+        var month = currentTime.getMonth() + 1;
+        var day = currentTime.getDate();
+        var year = currentTime.getFullYear();
+        var suffix = "AM";
+        
+        // Convert to 12-hour time format
+        if (hours >= 12) {
+          suffix = "PM";
+          hours = hours - 12;
+        }
+        if (hours == 0) {
+          hours = 12;
+        }
+        
+        // Add leading zeros to minutes and seconds
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+        
+        // Build the output string
+        var timeString = hours + ":" + minutes + ":" + seconds + " " + suffix;
+        var dateString = month + "/" + day + "/" + year;
+        
+        // Update the HTML elements
+        document.getElementById("time").innerHTML = timeString;
+        document.getElementById("date").innerHTML = dateString;
+      }
+      
+      // Call the updateTime function every second
+      setInterval(updateTime, 1000);
+    </script>
+  
+     
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const monthlySalesDetails =JSON.parse('<%=monthlySalesReport%>');
+    const monthlyProductSales = JSON.parse('<%=monthlyProductSales%>')
+    new ApexCharts(document.querySelector("#reportsChart"), {
+      series: [{
+        name: 'Sales',
+        data: monthlySalesDetails,
+      }],
+      chart: {
+        height: 350,
+        type: 'area',
+        toolbar: {
+          show: true
+        },
+      },
+      markers: {
+        size: 4
+      },
+      colors: ['#2eca6a', '#2eca6a', '#ff771d'],
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.3,
+          opacityTo: 0.4,
+          stops: [0, 90, 100]
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      tooltip: {
+        x: {
+          format: 'MMM'
+        },
+        y: {
+          formatter: function (value) {
+            return '₹' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          }
+        }
+      }
+    }).render();
+
+    new ApexCharts(document.querySelector("#productsReport"), {
+      series: [{
+        name: 'Product Sales',
+        data: monthlyProductSales,
+      }],
+      chart: {
+        height: 350,
+        type: 'bar',
+        toolbar: {
+          show: true
+        },
+      },
+      markers: {
+        size: 4
+      },
+      colors: ['#ff771d', '#2eca6a', '#ff771d'],
+      fill: {
+        type: "bar",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.3,
+          opacityTo: 0.4,
+          stops: [0, 90, 100]
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      tooltip: {
+        x: {
+          format: 'MMM'
+        },
+        y: {
+          formatter: function (value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          }
+        }
+      }
+    }).render();
+  });
+</script>
+
+
+
+  <%- include('../layouts/adminFooter.ejs') %>

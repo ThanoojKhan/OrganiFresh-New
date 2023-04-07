@@ -1,0 +1,184 @@
+<%- include('../layouts/userHeadernull.ejs') %>
+
+  <section style="background-color:white;">
+    <div class="container ftco-animate">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <%if(userData.image){%>
+                <img src="/userProfileIMG/<%=userData.image%>" alt="avatar" class="rounded-circle img-fluid"
+                  style="width: 150px; height: 150px;">
+                <%}else{%>
+                  <img src="https://storage.needpix.com/rsynced_images/blank-profile-picture-973460_1280.png"
+                    alt="avatar" class="rounded-circle img-fluid" style="height: 150px;width: 150px;">
+                  <%}%>
+                    <h5 class="my-3">
+                      <%=userData.username%>
+                    </h5>
+                    <div class="d-flex justify-content-center mb-2">
+                      <a href="/editProfile" class="btn btn-primary">Edit Profile</a>
+                      <a href="/changePassword" class="btn btn-outline-primary ms-1">Change Password</a>
+                    </div>
+                    <%if(userData.wallet!=undefined){%>
+                      <div class="d-flex justify-content-center mb-2">
+                      <p>Wallet : Rs <%=userData.wallet%></p>
+                    </div>
+                      <%}%>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 ftco-animate">
+          <div class=" card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    <%=userData.username%>
+                  </p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    <%=userData.email%>
+                  </p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Phone</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">
+                    <%=userData.phone%>
+                  </p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Address</p>
+                </div>
+                <div class="col-sm-9">
+                  <%if(userData.address==0){%>
+                    <a href="/addAddress" class="btn btn-danger">Add new address</a>
+                    <%}else{%>
+                      <select name="cars" id="cars"  style="max-width:90%; height: 30px;">
+                        <%for(i=0;i<userData.address.length;i++){%>
+                          <option value=""><%= userData.address[i].address %></option> 
+                          <%}%>
+                      </select>
+                      <%}%>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a style="width: 250px;" href="/orderHistory" class="btn btn-lg btn-dark mt-4">Order History</a>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+  <% if(orders.length>0){%>
+  <div class="container">
+    <div class="col-12 tm-block-col">
+      <div class=" tm-block tm-block-taller cart-list "><hr>
+        <h2 class="tm-block-title text-center mt-5">Orders</h2>
+        <%for(let i=0;i<orders.length;i++){ %>
+          <table class="table text-center ">
+            <thead class="bg-primary text-white">
+              <tr >
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status</th>
+                <th scope="col">Payment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%for(let j=0;j<orders[i].item.length;j++){%>
+                <tr scope="row" class="">
+                  <td>
+                    <%=orders[i].item[j].product.title%>
+                  </td>
+                  <td>
+                    <%=orders[i].item[j].quantity%>
+                  </td>
+
+                  <td>
+                      <%=orders[i].item[j].quantity*orders[i].item[j].price%>
+                  </td>
+                  <% }%>
+                    <%if(orders[i].is_delivered==false){ %>
+                      <td>
+                        On the way
+                      </td>
+                      <%}else{%>
+                        <td>
+                          Delivered
+                        </td>
+                        <%}%>
+                        <td>
+                          <%=orders[i].paymentType%>
+                        </td>
+                </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-center mb-3">
+            <a href="/cancelOrder?orderid=<%=orders[i]._id%>" class="btn btn-danger">Cancel order</a>&nbsp;&nbsp;
+            <a href="/orders?orderid=<%=orders[i]._id%>" class="btn btn-primary">order detalils</a>
+          </div>
+          <%}%>
+    </div>
+  </div>
+ 
+  </div>
+  <%}else{%>
+    
+    <div class="container ftco-animate">
+      <div class="col-12 tm-block-col">
+        <div class=" "><hr>
+          <h2 class="tm-block-title text-center mt-5 mb-5">No Pending Orders</h2>
+          </div>
+        </div>
+      </div>
+    
+
+    <%}%>
+    <%if(message!=null){%>
+      <script>
+        new Swal({
+          title: "Success",
+          text: "<%=message%>",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      </script>
+      <%}%>
+      <%if(msg!=null){%>
+        <script>
+            new Swal({
+                title: "",
+                text: "<%=msg%>",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+        <%}%>
+
+      <%- include('../layouts/userFooternull.ejs') %>
+      

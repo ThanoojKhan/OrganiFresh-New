@@ -1,0 +1,206 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+
+
+
+  <body id="reportsPage">
+    <div class="" id="home">
+      <nav class="navbar navbar-expand-xl">
+        <div class="container h-100 ">
+          <a class="navbar-brand" href="/admin/home">
+            <h1 class="tm-site-title mb-0 font">OrganiFresh</h1>
+          </a>
+          <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-justify" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+              </svg></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto h-100">
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/home">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-speedometer2" viewBox="0 0 16 16">
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z" />
+                      <path fill-rule="evenodd"
+                        d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z" />
+                    </svg></i>
+                  Dashboard
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link " href="/admin/userData">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                    </svg></i>
+                  User Data
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/addProduct">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-capslock" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM14.346 8.5 8 1.731 1.654 8.5H4.5a1 1 0 0 1 1 1v1h5v-1a1 1 0 0 1 1-1h2.846zm-9.846 5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1zm6 0h-5v1h5v-1z" />
+                    </svg></i>
+                  Add Product
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link " href="/admin/products">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-box-seam" viewBox="0 0 16 16">
+                      <path
+                        d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                    </svg></i>
+                  Products
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/admin/category">
+                  <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-c-square-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2Zm6.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z" />
+                    </svg></i>
+                  Category
+                </a>
+              </li>
+
+              <li class="nav-item dropdown mt-3">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cog"></i>
+                    <span>
+                        More <i class="fas fa-angle-down"></i>
+                    </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/admin/coupon">Coupon</a>
+                    <a class="dropdown-item" href="/admin/banner">Home Page Controls</a>
+                    <a class="dropdown-item" href="/admin/salesReport">Sales Report</a>
+                </div>
+            </li>
+
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link d-block" href="/admin/logout">
+                  <b>Logout</b>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container">
+        <!-- row -->
+
+        <div class="col-12 tm-block-col"><br>
+          <div class="d-flex justify-content-center mt-4 mb-4">
+            <h3>Home Page Controls</h3>
+          </div>
+          
+          <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+            <h2 class="tm-block-title">List</h2>
+            <table class="table text-center ">
+              <thead>
+                <tr>
+                  <th scope="col">Heading</th>
+                  <th scope="col">Description</th>
+                  <th scope="col-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <div class="d-flex justify-content-center align-items-center">
+                  <% if(banners.length> 0){ %>
+                    <% for(let i=0; i<banners.length; i++){ %>
+                      <tr>
+
+                        <td>
+                          <li><%=banners[i].heading1%></li>
+                          <li><%=banners[i].heading2%></li>
+                          <li><%=banners[i].heading3%></li>
+                        </td>
+                        <td>
+                          <li><%=banners[i].description1%></li>
+                          <li><%=banners[i].description2%></li>
+                          <li><%=banners[i].description3%></li>
+                        </td>
+
+
+                        <td>
+                          <ul class="listq wrapperq item mt-1">
+                            <a href="/admin/deleteBanner?id=<%=banners[i]._id%>" class="link ig addMore mr-2"
+                              title="Delete" onclick="return confirm('Are you sure you want to delete this Banner');">
+                              <i class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                  fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                  <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                  <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg></i>
+                            </a>
+                          </ul>
+                        </td>
+                      </tr>
+                      <% } %>
+                        <% } else { %>
+                          <tr>
+                            <td colspan="3">Nothing to Display</td>
+                          </tr>
+                          <% } %>
+                </div>
+              </tbody>
+            </table><div class="d-flex justify-content-centre mt-4 mb-4">
+              <a href="/admin/addBanner" class="btn btn-dark text-white" >Add Banner</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </body>
+
+  <%if(message){%>
+    <script>
+      new Swal({
+        title: "Success",
+        text: "<%=message%>",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000
+      });
+    </script>
+    <%}%>
+
+
+      <% if(msg){ %>
+        <script>
+          new Swal({
+            title: "Error",
+            text: "<%=msg%>",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000
+          });
+        </script>
+        <% } %>
+
+
+          <%- include('../layouts/adminFooter.ejs') %>

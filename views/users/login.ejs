@@ -1,0 +1,197 @@
+<%- include('../layouts/loginHeader.ejs') %>
+
+<style>
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+  
+  h1 {
+    max-width: 40ch;
+    text-align: center;
+    transform: scale(0.94);
+    animation: scale 4s forwards cubic-bezier(0.5, 1, 0.89, 1);
+  }
+  @keyframes scale {
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  span {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(4px);
+  }
+  
+  span:nth-child(1) {
+    animation: fade-in 0.8s 1.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(2) {
+    animation: fade-in 0.8s 1.2s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(3) {
+    animation: fade-in 0.8s 1.3s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(4) {
+    animation: fade-in 0.8s 1.4s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(5) {
+    animation: fade-in 0.8s 1.5s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(6) {
+    animation: fade-in 0.8s 1.6s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(7) {
+    animation: fade-in 0.8s 1.7s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(8) {
+    animation: fade-in 0.8s 1.8s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(9) {
+    animation: fade-in 0.8s 1.9s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(10) {
+    animation: fade-in 0.8s 2s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(11) {
+    animation: fade-in 0.8s 2.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(12) {
+    animation: fade-in 0.8s 2.2s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(13) {
+    animation: fade-in 0.8s 2.3s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(14) {
+    animation: fade-in 0.8s 2.4s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(15) {
+    animation: fade-in 0.8s 2.5s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(16) {
+    animation: fade-in 0.8s 2.6s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(17) {
+    animation: fade-in 0.8s 2.7s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  span:nth-child(18) {
+    animation: fade-in 0.8s 2.8s forwards cubic-bezier(0.11, 0, 0.5, 0);
+  }
+  
+  @keyframes fade-in {
+    100% {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }</style>
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh">
+
+
+<section class="container ftco-section ftco-no-pb ftco-no-pt bg-light ">
+  <div class="container bg-color-2 ">
+    <div class="row">
+      <div class="col-12 col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(/fruits-pineapple.gif);">
+      </div>
+      <div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
+        <div class="heading-section-bold">
+          <div class="ml-md-0 "><br>
+            <a href="/"><h1>
+              <span>Welcome</span>
+              <span>To</span>
+              <span>OrganiFresh</span>
+            </h1></a>
+          </div>
+        </div>
+        <div class="pb-md-5 mt-5 justify-content-center">
+            <br>
+          <form action="/login" id="form" method="post">
+            <div class="form-login mr-3">
+              <input name="email" type="email" id="mail" class="form-control mt-5 input-sm text-center"
+                placeholder="Email" />
+              
+              <input name="password" type="password" id="pas" class="form-control mt-4 input-sm text-center"
+                placeholder="Password" />
+              <% if(typeof message!='undefined' ||typeof msg!='undefined' ){ %>
+                <small class="mt-2 d-flex justify-content-center text-success txt-style">
+                  <%= message %>
+                </small>
+                <small class="d-flex justify-content-center text-danger txt-style">
+                  <%= msg %>
+                </small>
+                <% } %>
+                <small class="d-flex justify-content-center error text-danger txt-style"></small>
+                  </br></br>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <div><span class="group-btn ">
+                      <button type="submit" class="btn btn-primary py-3 px-5">Login</button>
+                    </span>
+                  </div>
+                  <div>
+                  </div>
+                    
+                  </div>
+                  <div class="d-flex justify-content-around align-items-center mt-4">
+                    <span><a href="/signup" class="text-white"> Create an account?</a></span>
+                    
+                  </div>
+                  <div class="d-flex justify-content-around align-items-center mt-5">
+                  <span><a href="/otpLogin" class="text-dark mt-4 h5"> OTP Login</a></span>
+                </div>
+          </form>
+            
+          </div>
+        
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+  <script>
+    const form = document.getElementById('form');;
+    const emailInput = document.getElementById('mail');
+    const passwordInput = document.getElementById('pas');
+    const errorElement = document.querySelector('.error');
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    form.addEventListener('submit', (e) => {
+      let messages = [];
+  
+      if (emailInput.value.trim().length === 0) {
+        messages.push('Email Required');
+      }else if (!emailRegex.test(emailInput.value.trim())) {
+        messages.push('Email is invalid');
+      }else if (passwordInput.value.trim().length===0) {
+        messages.push('Password required');
+      }
+  
+      if (messages.length > 0) {
+        e.preventDefault();
+        errorElement.innerText = messages.join(', ');
+      }
+    });
+  </script>
+  <%- include('../layouts/loginFooter.ejs')%>

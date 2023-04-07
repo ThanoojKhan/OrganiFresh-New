@@ -1,0 +1,155 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+
+
+
+
+
+    <style>
+        .gradient-custom {
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        }
+
+        .card-custom {
+            
+            background-color: #f8f9fa;
+        }
+
+
+        .input-custom {
+            background-color: white;
+        }
+
+        .white-text {
+            color: hsl(52, 0%, 98%);
+            font-weight: 100;
+            font-size: 14px;
+        }
+
+        .back-button {
+            background-color: hsl(52, 0%, 98%);
+            font-weight: 700;
+            color: black;
+            margin-top: 50px;
+        }
+    </style>
+
+
+
+
+<div class="row mt-3 mx-3 justify-content-center ftco-animate" style=" margin-top:25px ;">
+    <div class="col-md-9 justify-content-center">
+        <div class="card card-custom pb-4">
+            <div class="card-body mt-0 mx-5">
+                <div class="text-center mb-3 pb-2 mt-3">
+                    <h4 style="color: #495057 ;">Delivery Details</h4>
+                </div>
+                <form action="/addAddress" class="mb-0" method="post" id="form">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" name="address" id="address" class="form-control input-custom" />
+                                <label class="form-label" for="form9Example1">Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" name="city" id="city" class="form-control input-custom" />
+                                <label class="form-label" for="form9Example3">City</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" name="district" id="district" class="form-control input-custom" />
+                                <label class="form-label" for="form9Example3">District</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" name="state" id="state" class="form-control input-custom" />
+                                <label class="form-label" for="form9Example4">State</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" name="country" id="country" class="form-control input-custom" />
+                                <label class="form-label" for="form9Example6">Country</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-end d-flex justify-content-center"><br>
+                        <!-- Submit button -->
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-rounded"
+                                style="background-color: #0062CC ;" onclick="return validation()">Add Details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%if(message!=null){ %>
+    <script>
+        new Swal({
+            title: "Success",
+            text: "<%=message%>",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    <%}%>
+
+        <%if(msg){%>
+            <script>
+                new Swal({
+                    title: "",
+                    text: "<%=msg%>",
+                    icon: "error",
+                });
+            </script>
+            <%}%>
+
+<script>
+    function validation(){
+    const form = document.getElementById('form')
+    const address = document.getElementById("address");
+    const city = document.getElementById("city");
+    const district = document.getElementById("district");
+    const state = document.getElementById("state");
+    const country = document.getElementById("country");
+    const errorElement = document.querySelector('.error');
+
+        let messages = [];
+        if (address.value.trim() === "") {
+            messages.push("Address must be filled out")
+        }
+        if (city.value.trim() === "") {
+            messages.push("City must be filled out")
+        }
+        if (district.value.trim() === "") {
+            messages.push("District must be filled out")
+        }
+        if (state.value.trim() === "") {
+            messages.push("State must be filled out")
+        }
+        if (country.value.trim() === "") {
+            messages.push("Country must be filled out")
+        }
+        if (messages.length > 0) {
+            e.preventDefault();
+            errorElement.innerText = messages.join(', ');
+        }
+}
+</script>
+
+                    <%- include('../layouts/userFooternull.ejs') %>

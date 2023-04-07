@@ -1,0 +1,315 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <body class="goto-here">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+            <div class="container">
+                <div class="row no-gutters slider-text align-items-center justify-content-center">
+                    <div class="col-md-9 ftco-animate text-center">
+                        <p class="breadcrumbs"><span class="mr-2"><a href="/">Home</a></span> </p>
+                        <h1 class="mb-0 bread">Shop</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-5 ftco-animate">
+                        <div class="sidebar">
+
+                            <div class="mt-5">
+                                <div class="sidebar__item__color sidebar__item__color--white">
+                                    <form action="">
+                                        <div class="input-group ">
+                                            <input type="text" onkeyup="filtersearch()" id="search"
+                                                class="form-control rounded col-8 text-dark " style="height: 10px;"
+                                                placeholder="Search" />
+                                            <input type="button" class="btn btn-primary rounded" value="Search">
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="sidebar__item__color sidebar__item__color--white ml-2 mt-5">
+                                    <h4>Shop by Category</h4>
+                                    <%category.forEach(element=> {%>
+                                        <div class="">
+                                            <label for="">
+                                                <input type="checkbox" onclick="category('<%=element.category%>')"
+                                                    name="<%=element.category%>" id="<%=element.category%>"
+                                                    value="<%=element.category%>">
+                                                <%=element.category%>
+                                            </label>
+                                        </div>
+                                        <%})%>
+                                </div>
+                            </div>
+
+                            <div class="sidebar__item mt-5">
+                                <h4>Shop by Price</h4>
+                                <div class="sidebar__item__size mb-5 ml-2">
+                                    <input onclick="price(4)" type="checkbox" value="2000" id="FOUR"><label
+                                        for="">&nbsp;
+                                        2000-above
+                                    </label><br>
+
+                                    <input onclick="price(3)" type="checkbox" value="500,1000" id="THREE"><label
+                                        for="">&nbsp;
+                                        500-1000
+                                    </label><br>
+
+                                    <input onclick="price(2)" type="checkbox" value="100,500" id="TWO"><label for="">
+                                        &nbsp;
+                                        100-500
+                                    </label><br>
+
+                                    <input onclick="price(1)" type="checkbox" value="0,100" id="ONE"><label for="">
+                                        &nbsp;
+                                        0-100
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-9 col-md-7">
+
+                        <div class="row mt-2" id="Filter">
+                            <%product.forEach(item=> {%>
+                                <div class="col-12 col-md-6 col-lg-3 ftco-animate">
+                                    <div class="product">
+                                        <a href="/singleProduct?id=<%=item._id%>" class="img-prod"><img
+                                                class="img-fluid" src="/proImage/<%=item.image[0]%>" alt="">
+                                        </a>
+                                        <div class="text py-3 pb-4 px-3 text-center">
+                                            <h3><a href="/singleProduct?id=<%=item._id%>"><%-item.title%></a></h3>
+                                            <div class="d-flex">
+                                                <div class="pricing">
+                                                    <p class="price"><span class="price-sale">Rs. <%-item.price%>
+                                                                /-</span></p>
+                                                </div>
+                                            </div>
+                                            <div class="bottom-area d-flex px-3">
+                                                <div class="m-auto d-flex">
+                                                    <a href="/addToCart?id=<%=item._id%>"
+                                                        class="buy-now d-flex justify-content-center align-items-center mx-1"
+                                                        title="Add To Cart">
+                                                        <span><i class="ion-ios-cart"></i></span>
+                                                    </a>
+                                                    <a href="/addToWishlist?id=<%=item._id%>"
+                                                        class="heart d-flex justify-content-center align-items-center"
+                                                        title="Wishlist">
+                                                        <span><i class="ion-ios-heart"></i></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+
+
+                        <div class="col-lg-12 text-center">
+                            <div class="block-27">
+                                <ul>
+                                    <%for(let j=1;j<=totalPages;j++){%>
+                                        <li><a href="?page=<%=j%>">
+                                                <%=j%>
+                                            </a></li>
+
+                                        <%}%>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <%if(msg!=null){%>
+            <script>
+                new Swal({
+                    title: "",
+                    text: "<%=msg%>",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+            <%}%>
+                <%if(message!=null){ %>
+                    <script>
+                        new Swal({
+                            title: "Success",
+                            text: "<%=message%>",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    </script>
+                    <%}%>
+                        <script>
+                            let n = 0
+                            let b = 0
+                            let categorys = []
+                            let search
+                            let prices = []
+                            let filterprice = []
+                            function category(ID) {
+
+
+                                if ($(`#${ID}`).is(':checked') == true) {
+                                    categorys[n] = $(`#${ID}`).val()
+                                    n++
+                                    console.log(categorys);
+                                    console.log($(`#${ID}`).is(':checked'))
+                                } else {
+                                    console.log($(`#${ID}`).is(':checked'))
+                                    console.log(categorys.indexOf(`${$(`#${ID}`).val()}`));
+                                    let index = categorys.indexOf(`${$(`#${ID}`).val()}`)
+                                    categorys.splice(index, 1)
+                                    n--
+                                    console.log(categorys);
+                                }
+                                submit(categorys, filterprice, search)
+
+                            }
+
+
+                            function submit(categorys) {
+                                $.ajax({
+                                    url: '/shopFilter',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({ categorys, filterprice, search }),
+                                    success: (res) => {
+                                        let html = []
+                                        if (res.Data) {
+                                            console.log(res.Data);
+                                            $('#Filter').html('')
+                                            res.Data.forEach(value => {
+                                                value.forEach((item, i) => {
+                                                    html +=
+                                                        `
+<div class="col-md-6 col-lg-3">
+<div class="product">
+<a href="/singleProduct?id=${item._id} "class="img-prod"><img class="img-fluid" src="/proImage/${item.image[0].toString('utf8')}" alt="">
+</a>
+<div class="text py-3 pb-4 px-3 text-center">
+<h3><a href="/singleProduct?id=${item._id}">${item.title}</a></h3>
+<div class="d-flex">
+<div class="pricing">
+<p class="price"><span class="price-sale">Rs. ${item.price}/-</span></p>
+</div>
+</div>
+<div class="bottom-area d-flex px-3">
+<div class="m-auto d-flex">
+<a href="/addToCart?id=${item._id}"
+class="buy-now d-flex justify-content-center align-items-center mx-1" title="Add To Cart">
+<span><i class="ion-ios-cart" ></i></span>
+</a>
+<a href="/addToWishlist?id=${item._id}"
+class="heart d-flex justify-content-center align-items-center" title="Wishlist">
+<span><i class="ion-ios-heart"></i></span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>`
+                                                })
+                                            });
+                                            $('#Filter').html(html)
+                                        }
+                                    }
+                                })
+                            }
+                            function filtersearch() {
+                                search = $('#search').val()
+                                submit(categorys, search, filterprice)
+                            }
+
+                            function price(check) {
+                                filterprice = []
+                                let one, two, three, fore
+                                let n = 0, index
+                                if ($("#ONE").is(':checked') == true) {
+                                    one = $("#ONE").val()
+                                    prices[n] = one
+                                    n++
+                                } else if (check == 1) {
+                                    index = prices.indexOf($("#ONE").val())
+                                    prices.splice(index, 1)
+
+                                }
+                                if ($("#TWO").is(':checked') == true) {
+                                    two = $("#TWO").val()
+                                    prices[n] = two
+                                    n++
+                                } else if (check == 2) {
+                                    index = prices.indexOf($("#TWO").val())
+                                    prices.splice(index, 1)
+
+                                }
+                                if ($("#THREE").is(':checked') == true) {
+                                    three = $("#THREE").val()
+                                    prices[n] = three
+                                    n++
+                                } else if (check == 3) {
+                                    index = prices.indexOf($("#THREE").val())
+                                    prices.splice(index, 1)
+
+                                }
+                                if ($("#FOUR").is(':checked') == true) {
+                                    fore = $("#FOUR").val()
+                                    prices[n] = fore
+                                    n++
+                                } else if (check == 4) {
+                                    index = prices.indexOf($("#FOUR").val())
+                                    prices.splice(index, 1)
+
+                                }
+                                let length
+                                if (prices) {
+                                    length = prices.length
+                                }
+
+                                //    console.log(prices[length-1].split(',').length)
+                                if (prices.length == 1 && prices[length - 1].split(',').length == 2) {
+                                    let first = [prices[length - 1]]
+                                    first = first[0].split(',')
+
+                                    filterprice[0] = first[0]
+                                    filterprice[1] = first[1]
+
+                                } else if (prices.length == 1 && prices[length - 1].split(',').length == 1) {
+                                    let first = []
+                                    first[0] = prices[0]
+                                    filterprice[0] = first[0]
+                                    console.log(filterprice);
+                                } else if (prices.length > 1 && prices[length - 1].split(',').length == 2) {
+                                    let first = [prices[0]]
+                                    let second = [prices[length - 1]]
+                                    first = first[0].split(',')
+                                    second = second[0].split(',')
+                                    filterprice[0] = first[0]
+                                    filterprice[1] = second[1]
+                                    console.log(filterprice);
+                                } else if (prices.length > 1 && prices[length - 1].split(',').length == 1) {
+                                    let first = [prices[0]]
+                                    first = first[0].split(',')
+                                    filterprice[0] = first[0]
+                                    console.log(filterprice);
+                                }
+                                submit(categorys, search, filterprice)
+                            }
+
+                        </script>
+
+
+                        <%- include('../layouts/userFooter.ejs') %>

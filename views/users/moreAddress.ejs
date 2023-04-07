@@ -1,0 +1,41 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <div class="ftco-section ftco-animate">
+        <div class="container vh-100">
+            <div class="d-flex mb-" style="justify-content: center;">
+                <h4><span class=""> Select Your Address</span></h4>
+            </div>
+            <div class="row mt-3 mb-5 justify-content-center">
+                <% if (user==undefined) { %>
+                    <% } else { %>
+                        <% for (let i=0; i <user.address.length; i++) { %>
+
+                            <div class="card text-center mr-3 mb-3" style="width: 18rem;">
+                                <div class="card-body">
+                                  <h5 class="card-title"><%=user.address[i].address%></h5>
+                                  <p class="card-text"><%=user.address[i].city%>,&nbsp;
+                                    <%=user.address[i].district%>,&nbsp;<br>
+                                        <%=user.address[i].state%>,&nbsp;
+                                            <%=user.address[i].country%></p>
+                                  <a href="/editProfile?index=<%= i %>" class="btn btn-primary">Select</a>
+                                </div>
+                              </div>
+
+                            <% } %>
+                                <% } %>
+            </div>
+            <div class="row text-center mt-4 mb-4 justify-content-center">
+                <div class="">
+                    <a href="/addAddress" class="site-btn2 ">Add New Address</a>
+                </div>
+            </div>
+            <div class="row text-center mt-4 mb-4 justify-content-center">
+                <script>
+                    document.write('<a href= "' + document.referrer + '" class="text-info"><<< Go Back</a>');
+                </script>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include('../layouts/userFooternull.ejs') %>

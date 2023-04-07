@@ -1,0 +1,308 @@
+<%- include('../layouts/loginHeader.ejs') %>
+
+<style>
+  
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: sans-serif;
+  background: white;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+}
+
+input {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(#dcc698, rgba(20, 104, 20, 0.63));
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+.login-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #000000;
+  text-align: center;
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  color: #030303;
+  transition: 500ms;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.login-box .user-box .input {
+  width: 100%;
+  padding: 10px 0;
+  color: #fff;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #fff;
+}
+
+.input:active ~ label {
+  top: -20px;
+  color: #bacbcc;
+  font-size: 12px;
+ }
+
+.input:focus ~ label {
+ top: -20px;
+ color: #d7e3e4;
+ font-size: 12px;
+}
+
+.input:valid ~ label  {
+  top: -20px;
+  color: #c9d7d8;
+  font-size: 12px;
+ }
+
+
+.login-box form a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all .5s;
+  margin-top: 40px;
+  letter-spacing: 4px;
+  color: #000000;
+}
+
+.login-box a:hover {
+  background-color: #c5cfcf;
+  color: #000000;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #606768,
+              0 0 25px #606768,
+              0 0 50px #606768,
+              0 0 100px #606768;
+}
+
+.login-box a span {
+  position: absolute;
+  display: block;
+}
+
+@keyframes btnAnimA {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+.login-box a span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #606768);
+  animation: btnAnimA 1500ms linear infinite;
+  /* animation-delay: 200ms; */
+  animation-fill-mode: backwards;
+  animation-play-state: running;
+}
+
+
+@keyframes btnAnimB {
+  0% {
+    top: -100%
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+.login-box a span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #606768);
+  animation: btnAnimB 1500ms linear infinite;
+  animation-delay: 300ms;
+}
+
+
+@keyframes btnAnimC {
+  0% {
+    right: -100%;
+  }
+  50% {
+    right: 100%;
+  }
+  100% {
+    right: 100%;
+  }
+}
+.login-box a span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #606768);
+  animation: btnAnimC 1500ms linear infinite;
+  animation-delay: 600ms;
+}
+
+
+@keyframes btnAnimD {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+.login-box a span:nth-child(4) {
+  left: 0;
+  bottom: -100%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #606768);
+  animation: btnAnimD 1500ms linear infinite;
+  animation-delay: 900ms;
+} 
+</style>
+
+
+
+<div class="login-box">
+  <h2>Signup</h2>
+  <form action="/signup" class="form" method="post" id="form1">
+    <div class="user-box">
+      <input name="username" class="input" type="text" id="username" required="">
+      <label class="label" for="">Username</label>
+    </div>
+    <!-- /.user-box -->
+    <div class="user-box">
+      <input class="input" type="email" name="email" id="email" required="">
+      <label class="label" for="">Email</label>
+    </div>
+    <!-- /.user-box -->
+    <div class="user-box">
+      <input class="input" type="tel" name="phone" id="phone" required="">
+      <label class="label" for="">Mobile Number</label>
+    </div>
+    <!-- /.user-box -->
+    <div class="user-box">
+      <input class="input" type="password" name="password" id="password" required="">
+      <label class="label" for="">Password</label>
+    </div>
+    <!-- /.user-box -->
+    <div class="user-box">
+      <input class="input" type="password" name="Rpassword" id="Rpassword" required="">
+      <label class="label" for="">Confirm Password</label>
+    </div>
+    <!-- /.user-box -->
+
+    <% if(typeof message!='undefined' ||typeof msg!='undefined' ){ %>
+      <small class="mt-2 d-flex justify-content-center text-success txt-style">
+        <%= message %>
+      </small>
+      <small class="d-flex justify-content-center text-danger txt-style">
+        <%= msg %>
+      </small>
+      <% } %>
+    <a href="#" onclick="document.getElementById('form1').submit() ">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      Register
+    </a><br>
+    
+    
+    <a href="/login">
+      Back To Login
+    </a>
+  </form>
+ <!-- /form -->
+
+ 
+</div>
+<!-- /.login-box -->
+
+
+  <script>
+    const form = document.getElementById('form1');
+    const usernameInput = document.getElementById('form3Example1c username');
+    const emailInput = document.getElementById('form3Example3c email');
+    const phoneInput = document.getElementById('form3Example3c phone');
+    const passwordInput = document.getElementById('form3Example4c password');
+    const RpasswordInput = document.getElementById('form3Example4cd Rpassword');
+    const errorElement = document.querySelector('.error');
+
+    form.addEventListener('submit', (e) => {
+      let messages = [];
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^\d{10}$/;
+      const regex_password = /^(?=.?[A-Z])(?=.[a-z])(?=.*[0-9]){8,16}/gm
+      if (usernameInput.value.trim().length === 0 && phoneInput.value.trim().length === 0 && emailInput.value.trim().length === 0 && passwordInput.value.trim().length === 0 && RpasswordInput.value.trim().length === 0) {
+        messages.push('Fill all the fields');
+      } else if (usernameInput.value.trim().length === 0) {
+        messages.push('Username is required');
+      } else if (!emailRegex.test(emailInput.value.trim())) {
+        messages.push('Email is invalid');
+      } else if (phoneInput.value.trim().length === 0) {
+        messages.push('Phone number is required');
+      }
+      else if (!phoneRegex.test(phoneInput.value.trim())) {
+        messages.push('Phone number is invalid');
+      } else if (passwordInput.value.length < 8) {
+        messages.push('Password must be at least 8 characters long');
+      } else if (!regex_password.test(passwordInput.value.trim())) {
+        messages.push('Use strong password');
+      } else if (passwordInput.value !== RpasswordInput.value.trim()) {
+        messages.push('Passwords do not match');
+      }
+
+      if (messages.length > 0) {
+        e.preventDefault();
+        errorElement.innerText = messages.join(', ');
+      }
+    });
+  </script>
+
+  <%- include('../layouts/loginFooter.ejs')%>

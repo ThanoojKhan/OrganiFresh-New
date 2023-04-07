@@ -1,0 +1,170 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <section class="ftco-section ftco-cart">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ftco-animate">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>Product</th>
+                                    <th>Image</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let a=0 %>
+                                    <%if(cartProducts==undefined){%>
+                                        <%}else{%>
+                                            <%if(cartProducts.item){%>
+                                                <%cartProducts.item.forEach((item)=>{%>
+                                                    <%a=1%>
+                                                        <%if(item.product.is_show===true){%>
+                                                            <tr>
+                                                                <td class="cart__product__item">
+                                                                    <div class="cart__product__item__title">
+                                                                        <h6>
+                                                                            <%=item.product.title%>
+                                                                        </h6>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="cart__product__item">
+                                                                    <div class="cart__product__item__title">
+                                                                        <img width="60px" height="50px" src="/proImage/<%=item.product.image[0]%>"
+                                                                            alt="">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="cart__price">₹ <%=item.price%>
+                                                                </td>
+                                                                <td class="cart__quantity">
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                        <button class="quantity__minus" style="width: 20px;" data-id="<%=item._id%>"
+                                                                            data-index="">-</button>
+                                                                        <h5 id="quantity-" class="ml-3 mr-3">
+                                                                            <%=item.quantity%>
+                                                                        </h5>
+                                                                        <button class="quantity__plus" style="width: 20px;" data-id="<%=item._id%>"
+                                                                            data-index="">+</button>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="cart__total" id="productTotal<%=item._id%>">₹
+                                                                    <%=item.price*item.quantity%>
+                                                                </td>
+                                                                <td class="cart__close"><a href="/removeCart?id=<%=item._id%>"><span><svg
+                                                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                                viewBox="0 0 24 24">
+                                                                                <path fill="currentColor"
+                                                                                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z" />
+                                                                            </svg></span></a></td>
+                                                                <%}%>
+                                                                    <%})%>
+                                                                        <%}%>
+                                                                            <%}%>
+                                                            </tr>
+                                                            <% if(a==0){ %>
+                                                                <div class="d-flex justify-content-center vh-100 ftco-animate">
+                                                                    <div>
+                                                                        <div><img src="/images/cartempty.gif" style="width: 100%;" alt=""></div>
+                                                                        <div class="text-center mt-4">
+                                                                            <h3>You have no items in your shopping cart
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div class="text-center mt-4">
+                                                                            <h4><a href="/shopPage"> Lets go buy
+                                                                                    something</a></h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% } else{ %>
+                                                                    <%if(totalPrice){%>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td colspan="2">
+                                                                            <h3>Cart Total</h3>
+                                                                        </td>
+                                                                        <td class="">
+                                                                            <h3 id="TotalPricee"> Rs. <%=totalPrice%>
+                                                                            </h3>
+                                                                        </td>
+                                                                        <%}%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4 ftco-animate">
+                <p><a href="/checkOut" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+            </div>
+        </div>
+        </div>
+        </div>
+        <% } %>
+    </section>
+
+    <%if(msg){%>
+        <script>
+            new Swal({
+                title: "",
+                text: "<%=msg%>",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+        <%}%>
+            <%if(message!=null){ %>
+                <script>
+                    new Swal({
+                        title: "Success",
+                        text: "<%=message%>",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                </script>
+                <%}%>
+
+                    <script>
+                        const plusBtns = document.querySelectorAll('.quantity__plus');
+                        plusBtns.forEach(btn => {
+                            btn.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                const proid = event.target.dataset.id;
+                                const userId = '<%=session%>';
+                                fetch(`/incrementCart?id=${proid}&userId=${userId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const quantityEl = event.target.parentElement.querySelector('#quantity-');
+                                        quantityEl.innerText = data.quantity;
+                                        document.querySelector(`#productTotal${proid}`).textContent = '₹' + data.price
+                                        document.querySelector('#TotalPricee').innerText = '₹' + data.totalPrice
+                                    })
+                                    .catch(err => console.log(err))
+                            });
+                        });
+
+
+                        const minusBtns = document.querySelectorAll('.quantity__minus');
+                        minusBtns.forEach(btn => {
+                            btn.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                const proid = event.target.dataset.id;
+                                const userId = '<%=session%>';
+                                fetch(`/decrementcart?id=${proid}&userId=${userId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const quantityEl = event.target.parentElement.querySelector('#quantity-');
+                                        quantityEl.innerText = data.quantity;
+                                        document.querySelector(`#productTotal${proid}`).textContent = '₹' + data.price
+                                        document.querySelector('#TotalPricee').innerText = '₹' + data.totalPrice
+                                    })
+                                    .catch(err => console.log(err))
+                            });
+                        });
+                    </script>
+
+                    <%- include('../layouts/userFooternull.ejs') %>

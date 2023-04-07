@@ -1,0 +1,64 @@
+<%- include('../layouts/adminLoginHeader.ejs') %>
+
+
+<section class="vh-100 bgimg" style="background-image: url(images/login-bg.jpg);">
+    <div class="container-xl h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div>
+            <div class="p-5 text-center">
+
+              <h3 class="mb-5">Admin Login</h3>
+
+              <form action="/admin" method="post">
+                <div class="form-outline mb-4">
+                  <input name="email" type="email" id="typeEmailX-2"
+                    class="form-control bg-dark form-control-lg text-center" placeholder="Email" />
+
+                </div>
+
+                <div class="form-outline mb-4 ">
+                  <input name="password" type="password" id="typePasswordX-2"
+                    class="form-control bg-dark form-control-lg text-center" placeholder="Password" /> <br>
+                </div>
+
+                <div class="d-grid gap-2 col-6 mx-auto mb-4">
+                  <button class="btn btn-danger" style="width: 260px;" type="submit">Login</button>
+                </div>
+                <% if(typeof msg!='undefined' ){ %>
+                  <small class="text-danger" style="font-size: medium;">
+                    <%= msg %>
+                  </small>
+                  <% } %>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    const form = document.getElementById('form');;
+    const emailInput = document.getElementById('typeEmailX-2 mail');
+    const passwordInput = document.getElementById('typePasswordX-2');
+    const errorElement = document.querySelector('.error');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    form.addEventListener('submit', (e) => {
+      let messages = [];
+
+      if (emailInput.value.trim().length === 0) {
+        messages.push('Email Required');
+      } else if (!emailRegex.test(emailInput.value.trim())) {
+        messages.push('Invalid Email');
+      } else if (passwordInput.value.trim().length === 0) {
+        messages.push('Password Required');
+      }
+
+      if (messages.length > 0) {
+        e.preventDefault();
+        errorElement.innerText = messages.join(', ');
+      }
+    });
+  </script>
+  <%- include('../layouts/adminFooter.ejs') %>

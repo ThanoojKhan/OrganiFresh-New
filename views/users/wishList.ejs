@@ -1,0 +1,107 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<%if(wishlist.wishlist.length!=0){%>
+  <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+    <div class="container">
+      <div class="row no-gutters slider-text align-items-center justify-content-center">
+        <div class="col-md-9 ftco-animate text-center">
+          <p class="breadcrumbs"><span class="mr-2"><a href="/">Home</a></span> <span>Wishlist</span></p>
+          <h1 class="mb-0 bread">My Wishlist</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="ftco-section ftco-cart">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12 ftco-animate">
+            <div class="cart-list">
+
+              <table class="table">
+                <thead class="thead-primary">
+                  <tr class="text-center">
+                    <th></th>
+                    <th colspan="2">Product</th>
+                    <th>Price</th>
+                    <th>Add To Cart</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if(wishlist!==undefined){%>
+                    <%if(wishlist.wishlist){%>
+                      <%wishlist.wishlist.forEach((item)=>{%>
+
+                        <tr class="text-center">
+                          <td class="cart__close"><a href="/removeWishlist?id=<%=item._id%>"><span><svg
+                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                  <path fill="currentColor"
+                                    d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z" />
+                                </svg></span></a></td>
+
+                          <td class="image-prod">
+                            <div class="img" ><img style="width: 120px;" src="/proImage/<%=item.image[0]%>" alt=""></div>
+                          </td>
+
+                          <td class="product-name">
+                            <h3>
+                              <%=item.title%>
+                            </h3>
+                            <p>
+                              <%=item.description%>
+                            </p>
+                          </td>
+
+                          <td class="price">RS <%=item.price%>
+                          </td>
+
+                          <td class="product-remove"><a class="bg-success" href="/addToCart?id=<%=item._id%>"><span
+                                class="ion-ios-cart"></span></a></td>
+
+                          <td class="total"></td>
+                        </tr>
+                        <hr><!-- END TR-->
+                        <%})%>
+                          <%}%>
+                            <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <% } else { %>
+            <div class="  ftco-animate ">
+              <div class="vh-100 d-flex align-items-center justify-content-center">
+                <div class="text-center"><img src="/images/emptycart.webp" style="width: 100%;" alt="">
+                  <br><br><h3>Your haven't followed anything</h3>
+                  <h4><a href="/shopPage"> Wishlist Now</a></h4>
+                </div>
+              </div>
+            </div>
+            <%}%>
+    </div>
+  </section>
+  <%if(msg!=null){%>
+    <script>
+      new Swal({
+        title: "",
+        text: "<%=msg%>",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000
+      });
+    </script>
+    <%}%>
+      <%if(message!=null){ %>
+        <script>
+          new Swal({
+            title: "Success",
+            text: "<%=message%>",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000
+          });
+        </script>
+        <%}%>
+
+          <%- include('../layouts/userFooternull.ejs') %>

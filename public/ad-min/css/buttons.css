@@ -1,0 +1,57 @@
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+/* General styles end */
+.wrapperq {
+	position: relative;
+}
+.wrapperq :is(.btnq, .link) {
+	display: inline-flex ;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background-color: #dadada;
+	color: #151515;
+	border-radius: 50%;
+}
+.btnq {
+	position: absolute;
+	border: none;
+	cursor: pointer;
+	z-index: 10;
+}
+
+.active .btnq{
+    
+    transform: translateX(30px);
+}
+
+.active.btnq,
+.btnq:hover {
+	outline: 3px solid #0561ee;
+	outline-offset: -4px;
+}
+
+.addmore{
+    transition: all ease-in-out 0.1s!important;   
+}
+.item {
+	display: flex;
+	list-style: none;
+    margin-left: 5px;
+}
+.link:hover {
+	color: #fff;
+	transition: background-color 0.5s;
+}
+.ig:hover {
+	background-color: #f21d1d;
+}
+.tw:hover {
+	background-color: #1da1f2;
+}
+.sc:hover {
+	background-color: #fffc00;
+}
