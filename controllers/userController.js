@@ -1377,8 +1377,7 @@ const sendMessage = async (req, res) => {
             msg = 'Please fill the fields'
         } else {
             if (messageBody) {
-                res.redirect('/contactPage')
-                message = 'Message Sent'
+                
                 const mailtransport = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
                     port: 465,
@@ -1406,6 +1405,8 @@ const sendMessage = async (req, res) => {
                     }
                 })
             }
+            res.redirect('/contactPage')
+                message = 'Message Sent'
         }
 
     } catch (error) {
