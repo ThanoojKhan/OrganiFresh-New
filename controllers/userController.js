@@ -6,10 +6,10 @@ const categoryModel = require('../models/categoryModel')
 const salesSchema = require('../models/salesReport')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
-const session = require('express-session')
 const couponSchema = require('../models/couponModel')
 const bannerSchema = require('../models/bannerModel')
 const paypal = require('paypal-rest-sdk');
+
 require('dotenv').config();
 
 const regex_password = /^(?=.*?[A-Z])(?=.*[a-z])(?=.*[0-9]){8,16}/gm
@@ -960,8 +960,8 @@ const orderConfirm = async (req, res,next) => {
                         payment_method: "paypal",
                     },
                     redirect_urls: {
-                        return_url: "http://localhost:3000/success",
-                        cancel_url: "http://localhost:3000/checkout",
+                        return_url: "https://organifresh.store/success",
+                        cancel_url: "https://organifresh.store/checkout",
                     },
                     transactions: [
                         {
@@ -970,6 +970,7 @@ const orderConfirm = async (req, res,next) => {
                         },
                     ],
                 };
+                console.log("aaa");
 
                 paypal.payment.create(create_payment_json, function (error, payment) {
                     if (error) {
