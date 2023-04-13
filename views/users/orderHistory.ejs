@@ -1,55 +1,57 @@
 <%- include('../layouts/userHeadernull.ejs') %>
 
-<div class="container">
-    <!-- row -->
-
-    <div class="col-12 tm-block-col ftco-animate">
-<div class="tm-block tm-block-taller tm-block-scroll">
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12 ftco-animate">
     <h2 class="tm-block-title text-center my-5">Order History</h2>
-    <table class="table table-striped text-center">
-        <thead class="bg-primary text-white">
-            <tr>
-                <th scope="col">Start Date</th>
-                <th scope="col">Products Count</th>
-                <th scope="col">totalPrice</th>
-                <th scope="col">Status</th>
-                <th scope="col">View</th>
-                
-            </tr>
-        </thead>
-<%if(orders){%>
-    <tbody>
-        <%orders.forEach(order => {%>
-            <tr scope="row">
-                <td>
-                    <%= order.start_date %>
-                </td>
-                <td>
-                    <%= order.proCount %>
-                </td>
-                <td>
-                    <%= order.totalPrice %>
-                </td>
-                <td>
-                    <%=order.status%>
-                </td>
-                    
-                <td>
-                    <a
-                    href="/orders?orderid=<%=order._id%>"
-                    class="btn btn-warning btn-sm rounded-pill">View</a>
-                </td>
-               
-            </tr>
-        <%})%>
-        
-</tbody>
-    <%}%>
-       
-    </table>
-</div>
-</div>
-</div>
+            <div class="cart-list">
+                <table class="table table-striped text-center ">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Products Count</th>
+                            <th scope="col">totalPrice</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">View</th>
+                        </tr>
+                    </thead>
+            <%if(orders){%>
+                <tbody>
+                    <%orders.forEach(order => {%>
+                        <tr scope="row">
+                            <td>
+                                <%= order.start_date %>
+                            </td>
+                            <td>
+                                <%= order.proCount %>
+                            </td>
+                            <td>
+                                <%= order.totalPrice %>
+                            </td>
+                            <td>
+                                <%=order.status%>
+                            </td>
+                            <td>
+                                <a
+                                href="/orders?orderid=<%=order._id%>"
+                                class="btn btn-warning btn-sm rounded-pill">View</a>
+                            </td>
+                           
+                        </tr>
+                    <%})%>
+            </tbody>
+                <%}%>
+                </table>
+              </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+
+
 <%if(message!=null){ %>
     <script>
         new Swal({

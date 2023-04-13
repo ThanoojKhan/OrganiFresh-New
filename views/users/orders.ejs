@@ -10,7 +10,7 @@
                             <%=order.userId.username%>
                         </span>
                         <button type="button" class="bg-secondary" style="height: 40px; border-radius: 10px;"
-                            onclick="return printTable()">Print Order
+                            onclick="return printTable()">Print
                         </button>
                     </div>
                     <div class="card-body p-4">
@@ -210,5 +210,6 @@
             newWin.document.close();
             setTimeout(function () { newWin.close(); }, 10);
         }
+
     </script>
     <%- include('../layouts/userFooter.ejs') %>
