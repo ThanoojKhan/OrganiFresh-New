@@ -100,7 +100,7 @@
                                     </p>
                         </div>
                         <div class="d-flex justify-content-between pt-2">
-                            <p class="text-muted mb-0"></p>
+                            <p class="text-muted mb-0">Payment Id : <%= order.paymentId %></p>
                             <p class="text-muted mb-0"><span class="fw-bold me-4">Discount
                                     &nbsp;</span><%=discount-order.totalPrice%></p>
                         </div>
@@ -134,7 +134,23 @@
     </div>
 
 
-    <div style="display: none;" id="order">
+
+
+    <style>
+        #order {
+            display: none;
+            
+        }
+        
+        @media print {
+            #order {
+                display: block;
+            }
+        }
+    </style>
+
+
+    <div id="order">
         <table>
             <thead>
                 <tr><br><br><br>
@@ -153,7 +169,6 @@
                 <% order.item.forEach(item=> { %>
                     <tr>
                         <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
-
                         <td><br><br>
                             <img src="/proImage/<%= item.product.image[0] %>" alt="Product Image" style="height: 70px;">
                         </td>
@@ -172,23 +187,17 @@
         </table>
         <!-- Progress bar section -->
         <% if (order.is_delivered==true || order.admin_cancelled==true || order.user_cancelled==true) { %>
-
             <div class="d-flex justify-content-around mb-1"><br><br>
                 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">
-                    Delivered</p>
+                   Order Status: Delivered</p>
             </div>
             <% } else { %>
-
                 <div class="d-flex justify-content-around mb-1"><br><br>
-                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">On
+                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">Order Status: On
                         the way</p>
                 </div>
                 <% } %>
-
     </div>
-
-
-
 
 
 

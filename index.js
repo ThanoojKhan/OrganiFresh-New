@@ -28,10 +28,10 @@ app.use('/', userRoute)
 
 app.set('view engine','ejs')
 app.set('views','./views/users')
-app.use((error,req,res,next)=>{
-    res.status(error.status||500)
-    res.render('error')
-})
+// app.use((error,req,res,next)=>{
+//     res.status(error.status||500)
+//     res.render('error')
+// })
 
 app.listen(process.env.PORT, () => {
     console.log('server running');
