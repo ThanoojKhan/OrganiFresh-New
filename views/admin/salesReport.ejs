@@ -153,10 +153,10 @@
                     <%sales.forEach(sales=> {%>
                       <tr>
                         <td>
-                          <%=console.log(sales.orders[0].orderId)%>
+                          <%=sales.orders[0].orderId%>
                         </td>
                         <td>
-                          <%=sales.orders.paymentId%>
+                          <%=sales.orders[0].paymentId%>
                         </td>
                         <td>
                           <%=sales.userId.username%>

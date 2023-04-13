@@ -160,22 +160,16 @@
                             let prices = []
                             let filterprice = []
                             function category(ID) {
-                                console.log(ID);
 
                                 if ($(`#${ID}`).is(':checked') == true) {
                                     categorys[n] = $(`#${ID}`).val()
                                     n++
-                                    console.log(categorys);
                                     
-                                    console.log($(`#${ID}`).is(':checked'))
                                 } else {
-                                    console.log($(`#${ID}`).is(':checked'))
                                     
-                                    console.log(categorys.indexOf(`${$(`#${ID}`).val()}`));
                                     let index = categorys.indexOf(`${$(`#${ID}`).val()}`)
                                     categorys.splice(index, 1)
                                     n--
-                                    console.log(categorys);
                                 }
                                 submit(categorys, filterprice, search)
 
@@ -192,7 +186,6 @@
                                     success: (res) => {
                                         let html = []
                                         if (res.Data) {
-                                            console.log(res.Data);
                                             $('#Filter').html('')
                                             res.Data.forEach(value => {
                                                 value.forEach((item, i) => {
@@ -281,7 +274,6 @@ class="heart d-flex justify-content-center align-items-center" title="Wishlist">
                                     length = prices.length
                                 }
 
-                                //    console.log(prices[length-1].split(',').length)
                                 if (prices.length == 1 && prices[length - 1].split(',').length == 2) {
                                     let first = [prices[length - 1]]
                                     first = first[0].split(',')
@@ -293,7 +285,6 @@ class="heart d-flex justify-content-center align-items-center" title="Wishlist">
                                     let first = []
                                     first[0] = prices[0]
                                     filterprice[0] = first[0]
-                                    console.log(filterprice);
                                 } else if (prices.length > 1 && prices[length - 1].split(',').length == 2) {
                                     let first = [prices[0]]
                                     let second = [prices[length - 1]]
@@ -301,12 +292,10 @@ class="heart d-flex justify-content-center align-items-center" title="Wishlist">
                                     second = second[0].split(',')
                                     filterprice[0] = first[0]
                                     filterprice[1] = second[1]
-                                    console.log(filterprice);
                                 } else if (prices.length > 1 && prices[length - 1].split(',').length == 1) {
                                     let first = [prices[0]]
                                     first = first[0].split(',')
                                     filterprice[0] = first[0]
-                                    console.log(filterprice);
                                 }
                                 submit(categorys, search, filterprice)
                             }
