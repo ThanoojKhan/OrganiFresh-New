@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt')
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp')
+const { log } = require('util')
 require('dotenv').config();
 
 let msg
@@ -152,13 +153,12 @@ const loadSalesPage = async (req, res) => {
       let sales = [];
       let count
       if(filter === 'all'){
-        sales = await salesSchema.find({}).populate('userId').limit(6).skip((page - 1) * 6).exec();
+        sales = await salesSchema.find({}).populate('userId').populate('orders').limit(6).skip((page - 1) * 6).exec();
         count = await salesSchema.find({}).countDocuments()
       }else if (filter === 'weekly') {
         const startOfWeek = moment().startOf('week').toDate();
         const endOfWeek = moment().endOf('week').toDate();
 
-        console.log(startOfWeek);
         sales = await salesSchema
           .find({
             date: {
@@ -166,7 +166,7 @@ const loadSalesPage = async (req, res) => {
               $lte: endOfWeek,
             },
           })
-          .populate('userId').limit(6).skip((page - 1) * 6).exec();
+          .populate('userId').populate('orders').limit(6).skip((page - 1) * 6).exec();
 
           count = await salesSchema
           .find({
@@ -187,7 +187,7 @@ const loadSalesPage = async (req, res) => {
                   $lte: endOfYear,
                 },
               })
-              .populate('userId').limit(6).skip((page - 1) * 6).exec();
+              .populate('userId').populate('orders').limit(6).skip((page - 1) * 6).exec();
               count = await salesSchema
               .find({
                 date: {
@@ -196,10 +196,10 @@ const loadSalesPage = async (req, res) => {
                 },
               }).countDocuments()
         }else{
-            sales = await salesSchema.find().populate('userId').limit(6).skip((page - 1) * 6).exec()
+            sales = await salesSchema.find().populate('userId').populate('orders').limit(6).skip((page - 1) * 6).exec()
             count = await salesSchema.find().countDocuments()
         }
-        console.log(sales);
+        // const orders = await orderSchema.find().populate('userId').populate('item.product');
       res.render('salesReport', { sales,totalPages: Math.ceil(count / 6)});
     } catch (error) {
       console.log(error.message);
@@ -471,63 +471,70 @@ const addProduct = async (req, res) => {
 
 ////////EDIT PRODUCTS/////////////
 
+
 const editProduct = async (req, res) => {
     try {
         const prod = req.body
         const id = req.query.id
-        if (prod.title.trim().length == 0 || prod.price.trim().length == 0 || prod.stocks.trim().length == 0 || prod.category.length == 0 || prod.brand.trim().length == 0 || prod.description.trim().length == 0) {
-            msg = 'Fields Should Not Be Empty'
-            res.redirect('/admin/products')
-        } else {
-            let newprod
-            if (req.files !== 0) {
-                let image = req.files.map(file => file);
-                for (i = 0; i < image.length; i++) {
-                    let path = image[i].path
-                    const processImage = new Promise((resolve, reject) => {
-                        sharp(path).rotate().resize(1000, 800).toFile('public/proImage/' + image[i].filename,(err) => {
-                            sharp.cache(false);
-                            if (err) {
-                                console.log(err);
-                                reject(err);
-                            } else {
-                                console.log(`Processed file: ${path}`);
-                                resolve();
-                            }
-                        })
-                    });
-                    processImage.then(() => {
-                        fs.unlink(path, (err) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log(`Deleted file: ${path}`);
-                            }
-                        });
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-                    
-                }
-                newprod = await productSchema.updateOne({ _id: new Object(id) }, {
-                    $set: {
-                        title: prod.title,
-                        brand: prod.brand,
-                        description: prod.description,
-                        category: prod.category,
-                        stocks: prod.stocks,
-                        price: prod.price,
-                        image: req.files.map(file => file.filename)
-                    }
-                })
-            } 
-            message = 'Product Updated Successfully'
-            res.redirect('/admin/products')
+        const product = await productSchema.findById(id);
+        const selectedImagePositions = prod.updateImage; // User-selected image positions
+
+    if (prod.title.trim().length == 0 || 
+        prod.price.toString().trim().length == 0 || 
+        prod.stocks.toString().trim().length == 0 || 
+        prod.stocks <= 0 ||
+        prod.category.length == 0 || 
+        prod.brand.trim().length == 0 ||
+        prod.description.trim().length == 0
+        ) {
+      msg = 'Fields Should Not Be Empty';
+      res.redirect('/admin/editProduct');
+    } else {
+      let imagePaths = product.image;
+      let images = req.files.map(file => file);
+      // Update only the selected images
+      if (selectedImagePositions!=undefined) {
+        imagePaths = await Promise.all(imagePaths.map(async (path, i) => { 
+          if (selectedImagePositions.includes(i.toString())) {
+            const image = images[selectedImagePositions.indexOf(i.toString())];
+        
+            if (image) {
+              const newPath = 'public/proImage/' + image.filename;
+              await sharp(image.path).rotate().resize(1000, 800).toFile(newPath);
+              try {
+                await fs.promises.unlink(image.path);
+              } catch (error) {
+              }
+        
+              // Only update the image path if the user has selected a file
+              if (image.size > 0) {
+                return image.filename;
+              }
+            }
+          }
+          return path;
+        }));
+      }
+
+      await productSchema.updateOne({ _id: id }, {
+        $set: {
+          title: prod.title,
+          brand: prod.brand,
+          description: prod.description,
+          category: prod.category,
+          stocks: prod.stocks,
+          price: prod.price,
+          image: imagePaths
         }
-    } catch (error) {
-        console.log(error);
+      });
+      
+      message = 'Product Updated Successfully';
+      res.redirect('/admin/products');
     }
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 ////////////ADD CATEGORY///////////////
@@ -593,7 +600,6 @@ const categoryDelete = async (req, res) => {
     try {
         const delCat = req.query.id
         const category = await categorySchema.findOne({_id:delCat})
-        console.log(category);
         const product = await productSchema.findOne({category:delCat})
         if (product) {
             res.redirect('/admin/Category')
@@ -727,7 +733,6 @@ const loadEditCoupon = async(req,res)=>{
     try {
         const id = req.query.id
         const coupon = await couponSchema.findOne({_id:id})
-        console.log(coupon);
         res.render('editCoupon',{coupon,msg})
         msg=null
     } catch (error) {

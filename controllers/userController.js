@@ -24,11 +24,11 @@ let index
 
 paypal.configure({
     mode: 'sandbox',
-    client_id:process.env.PAYPALCLIENT_ID,
-    client_secret:process.env.PAYPALCLIENT_SCRT
+    client_id: process.env.PAYPALCLIENT_ID,
+    client_secret: process.env.PAYPALCLIENT_SCRT
 });
 
-  
+
 //////////SECURE PASSWORD////////////
 
 const securePassword = async (password) => {
@@ -77,7 +77,7 @@ const sendVerifyMail = async (username, email, user_id) => {
 
 /////////USER SIGNUP//////////
 
-const userSignup = async (req, res,next) => {
+const userSignup = async (req, res, next) => {
     try {
         res.render('signUp', { message, msg })
         message = null
@@ -91,7 +91,7 @@ const userSignup = async (req, res,next) => {
 
 ///////INSERT USERDATA//////////
 
-const insertUser = async (req, res,next) => {
+const insertUser = async (req, res, next) => {
     const usd = req.body
     let user
     const checkMail = await User.findOne({ email: usd.email })
@@ -159,7 +159,7 @@ const insertUser = async (req, res,next) => {
 
 ////////LOGIN USER///////
 
-const loginUser = async (req, res,next) => {
+const loginUser = async (req, res, next) => {
 
     try {
         res.render('login', { message, msg })
@@ -173,7 +173,7 @@ const loginUser = async (req, res,next) => {
 
 //////////LOGIN VERIFICATION///////////
 
-const verifyLogin = async (req, res,next) => {
+const verifyLogin = async (req, res, next) => {
     try {
         if (req.body.email.trim().length == 0 || req.body.password.trim().length == 0) {
             res.redirect('/login')
@@ -216,14 +216,14 @@ const verifyLogin = async (req, res,next) => {
 
 ///////LOAD HOME PAGE////////
 
-const loadHome = async (req, res,next) => {
+const loadHome = async (req, res, next) => {
     try {
         let session = req.session.user_id
-        const products = await productSchema.find({is_show:true}).sort({_id:-1})
+        const products = await productSchema.find({ is_show: true }).sort({ _id: -1 })
         const banner = await bannerSchema.findOne()
-        res.render('home', { product: products, session, msg ,message, banner})
+        res.render('home', { product: products, session, msg, message, banner })
         msg = null
-        message=null
+        message = null
     } catch (err) {
         console.log(err);
         next(err.message)
@@ -232,14 +232,14 @@ const loadHome = async (req, res,next) => {
 
 //////////////////LOAD PRODUCT DETAILS PAGE//////////////
 
-const productDetails = async (req, res,next) => {
+const productDetails = async (req, res, next) => {
     try {
         const id = req.query.id
         const session = req.session.user_id
         const product = await productSchema.findOne({ _id: new Object(id) })
-        res.render('singleProduct', { product: product, session,message,msg })
-        message=null
-        msg=null
+        res.render('singleProduct', { product: product, session, message, msg })
+        message = null
+        msg = null
     } catch (error) {
         console.log(error);
         next(error.message)
@@ -248,9 +248,8 @@ const productDetails = async (req, res,next) => {
 
 ////////////LOAD USER PROFILE PAGE/////////
 
-const userProfile = async (req, res,next) => {
+const userProfile = async (req, res, next) => {
     try {
-        console.log(index);
         const session = req.session.user_id
         if (session) {
             const userData = await User.findOne({ _id: new Object(session) })
@@ -270,6 +269,27 @@ const userProfile = async (req, res,next) => {
                         quantity: item.quantity,
                     }
                 })
+                const generateOrderId = () => {
+                    const date = new Date();
+                    const year = date.getFullYear().toString().substring(2, 4);
+                    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    const day = ("0" + date.getDate()).slice(-2);
+                    const randomStr = Math.random().toString(36).substring(7).toUpperCase();
+                    const num = Math.floor(Math.random() * 90 + 10);
+
+                    const orderId = `OrgFr-${year}${month}${day}-${randomStr}${num}`;
+                    return orderId;
+                }
+                const orderId = generateOrderId();
+                const generatePaymentId = () => {
+                    const randomStr = Math.random().toString(36).substring(7).toUpperCase();
+                    const randomStr1 = Math.random().toString(25).substring(2).toUpperCase();
+                    const num = Math.floor(Math.random() * 90 + 10);
+                    const num1 = Math.floor(Math.random() * 250 + 10);
+                    const orderId = `${randomStr1}${num1}-${randomStr}${num}`;
+                    return orderId;
+                }
+                const paymentId = generatePaymentId();
                 const latestOrder = await orderSchema.findOne().sort('-orderCount').exec()
                 const order = new orderSchema({
                     userId: session,
@@ -278,16 +298,16 @@ const userProfile = async (req, res,next) => {
                     totalPrice: req.session.payMoney,
                     orderCount: latestOrder ? latestOrder.orderCount + 1 : 1,
                     start_date: new Date().toLocaleDateString('en-GB'),
-                    paymentType: paymentMethod
+                    paymentType: paymentMethod,
+                    orderId: orderId,
+                    paymentId: paymentId
                 })
                 await order.save()
                 const orderData = await orderSchema.findOne({ userId: session }).sort({ _id: -1 }).populate('item.product')
                 orderData.item.forEach(async (item) => {
                     const productid = item.product._id
                     const quantity = item.quantity
-                    console.log(quantity);
                     const pinc = await productSchema.updateOne({ _id: productid }, { $inc: { stocks: -quantity } })
-                    console.log(pinc);
                 })
                 await cartSchema.deleteMany({ userId: session })
                 orderStatus = 0
@@ -308,15 +328,15 @@ const userProfile = async (req, res,next) => {
 
 //////LOAD USER EDIT PROFILE///////////////
 
-const loadEditProfile = async (req, res,next) => {
+const loadEditProfile = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const userData = await User.findOne({ _id: new Object(session) })
         const index2 = req.query.index
         let addressCount = userData.address[index2]
-        res.render('editProfile', { userData, session, msg, addressCount, index2,message })
-        message=null
-        msg=null
+        res.render('editProfile', { userData, session, msg, addressCount, index2, message })
+        message = null
+        msg = null
     } catch (error) {
         console.log(error);
         next(error.message)
@@ -326,7 +346,7 @@ const loadEditProfile = async (req, res,next) => {
 
 /////////EDIT PROFILE/////////
 
-const editProfile = async (req, res,next) => {
+const editProfile = async (req, res, next) => {
     try {
         const data = req.body;
         const id = req.session.user_id
@@ -336,7 +356,7 @@ const editProfile = async (req, res,next) => {
             await User.updateOne({ _id: new Object(id) }, { $set: { image: req.file.filename } })
         }
 
-        if (!data.username && !data.address && !data.city && !data.district  && !data.state   && !data.country) {
+        if (!data.username && !data.address && !data.city && !data.district && !data.state && !data.country) {
             res.redirect('/editProfile')
             msg = 'Fill all the fields'
         } else if (!data.username || data.username.trim().length < 3) {
@@ -360,49 +380,50 @@ const editProfile = async (req, res,next) => {
         } else if (regex_mobile.test(data.phone) == false) {
             res.redirect('/editProfile')
             msg = 'Enter valid phone number'
-        } 
+        }
         else {
 
-        if (index2) {
-            const editaddress = {
-                address: data.address,
-                city: data.city,
-                district: data.district,
-                state: data.state,
-                country: data.country
-            }
-            if (data.address && data.city && data.district && data.state && data.country) {
-                await User.updateOne({ _id: new Object(id) }, { $set: { [key]: editaddress } })
-                await User.updateOne({ _id: new Object(id) }, { $set: { username: data.username, email: data.email, phone: data.phone } })
-                res.redirect('/userProfile')
-                message = 'Profile Updated'
+            if (index2) {
+                const editaddress = {
+                    address: data.address,
+                    city: data.city,
+                    district: data.district,
+                    state: data.state,
+                    country: data.country
+                }
+                if (data.address && data.city && data.district && data.state && data.country) {
+                    await User.updateOne({ _id: new Object(id) }, { $set: { [key]: editaddress } })
+                    await User.updateOne({ _id: new Object(id) }, { $set: { username: data.username, email: data.email, phone: data.phone } })
+                    res.redirect('/userProfile')
+                    message = 'Profile Updated'
+                } else {
+                    res.redirect('/editProfile')
+                    msg = 'Fields Should Not Empty'
+                }
             } else {
-                res.redirect('/editProfile')
-                msg = 'Fields Should Not Empty'
-            }
-        } else {
-            if (data.address && data.city && data.district && data.state && data.country) {
-                await User.updateOne({ _id: new Object(id) }, {
-                    $set: {
-                        'address.0': {
-                            address: data.address,
-                            city: data.city,
-                            district: data.district,
-                            state: data.state,
-                            country: data.country
+                if (data.address && data.city && data.district && data.state && data.country) {
+                    await User.updateOne({ _id: new Object(id) }, {
+                        $set: {
+                            'address.0': {
+                                address: data.address,
+                                city: data.city,
+                                district: data.district,
+                                state: data.state,
+                                country: data.country
+                            }
                         }
-                    }
-                })
-                await User.updateOne({ _id: new Object(id) }, { $set: { username: data.username, email: data.email, phone: data.phone } })
-                res.redirect('/userProfile')
-                message = 'Profile Updated'
-            } else {
-                res.redirect('/editProfile')
-                msg = 'Fill all the fields'
+                    })
+                    await User.updateOne({ _id: new Object(id) }, { $set: { username: data.username, email: data.email, phone: data.phone } })
+                    res.redirect('/userProfile')
+                    message = 'Profile Updated'
+                } else {
+                    res.redirect('/editProfile')
+                    msg = 'Fill all the fields'
+                }
             }
-        }
 
-    }} catch (error) {
+        }
+    } catch (error) {
         console.log(error);
         next(error.message)
     }
@@ -411,7 +432,7 @@ const editProfile = async (req, res,next) => {
 
 /////////////LOAD CHANGE PASSWORD///////////
 
-const loadChangePassword = async (req, res,next) => {
+const loadChangePassword = async (req, res, next) => {
     try {
         res.render('changePassword', { msg })
         msg = null
@@ -424,7 +445,7 @@ const loadChangePassword = async (req, res,next) => {
 
 /////////////CHANGE PASSWORD////////////
 
-const changePassword = async (req, res,next) => {
+const changePassword = async (req, res, next) => {
     try {
         const newPassword = req.body.newPassword
         const rePassword = req.body.Repassword
@@ -451,7 +472,7 @@ const changePassword = async (req, res,next) => {
             res.redirect('/changePassword')
         }
     } catch (error) {
-        console.log(error);   
+        console.log(error);
         next(error.message)
     }
 }
@@ -473,7 +494,7 @@ const logOutIn = async (req, res) => {
 
 /////////EMAIL VERIFICATION////////////
 
-const verifyMail = async (req, res,next) => {
+const verifyMail = async (req, res, next) => {
     try {
         await User.updateOne({ _id: req.query.id }, { $set: { is_verified: 1 } })
         res.render('emailVerified')
@@ -486,7 +507,7 @@ const verifyMail = async (req, res,next) => {
 
 ////////OTP LOGIN///////
 
-const otpLogin = async (req, res,next) => {
+const otpLogin = async (req, res, next) => {
     try {
         res.render('otpLogin', { message, msg })
         message = null
@@ -499,7 +520,7 @@ const otpLogin = async (req, res,next) => {
 
 ////////OTP PAGE///////
 
-const otppage = async (req, res,next) => {
+const otppage = async (req, res, next) => {
     try {
         res.render('otpPage', { message, msg })
         message = null
@@ -522,7 +543,7 @@ let otp
 //////////OTP EMAIL ///////////
 
 let otpChechMail
-const verifyotpMail = async (req, res,next) => {
+const verifyotpMail = async (req, res, next) => {
     try {
         if (req.body.email.trim().length == 0) {
             res.redirect('/otpLogin')
@@ -583,7 +604,7 @@ const verifyotpMail = async (req, res,next) => {
 
 ///////OTP PAGE VERIFY////////
 
-const otpVerify = async (req, res,next) => {
+const otpVerify = async (req, res, next) => {
     try {
         if (req.body.otp.trim().length == 0) {
             res.redirect('/otpPage')
@@ -610,7 +631,7 @@ const otpVerify = async (req, res,next) => {
 
 //////LOAD CART PAGE///////
 
-const loadCart = async (req, res,next) => {
+const loadCart = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const cartProducts = await cartSchema.findOne({ userId: session }).populate('item.product')
@@ -623,7 +644,7 @@ const loadCart = async (req, res,next) => {
         await cartSchema.updateOne({ userId: session }, { $set: { totalPrice: totalPrice } })
         res.render('cart', { session, cartProducts, totalPrice, msg, message })
         msg = null
-        message=null
+        message = null
     } catch (error) {
         console.log(error);
         next(error.message)
@@ -632,7 +653,7 @@ const loadCart = async (req, res,next) => {
 
 ///////////ADD TO CART///////////
 
-const addToCart = async (req, res,next) => {
+const addToCart = async (req, res, next) => {
     try {
         const product_Id = req.query.id
         const user_Id = req.session.user_id
@@ -700,7 +721,7 @@ const addToCart = async (req, res,next) => {
 
 ///////////INCREMENT CART//////////
 
-const incrementCart = async (req, res,next) => {
+const incrementCart = async (req, res, next) => {
     try {
         const userId = req.session.user_id;
         const itemid = req.query.id;
@@ -741,7 +762,7 @@ const incrementCart = async (req, res,next) => {
 
 //////DECREMENT CART////////
 
-const decrementCart = async (req, res,next) => {
+const decrementCart = async (req, res, next) => {
     try {
         const userId = req.session.user_id;
         const itemid = req.query.id;
@@ -777,22 +798,22 @@ const decrementCart = async (req, res,next) => {
 }
 //////REMOVE FROM CART////////
 
-const removeCart = async (req, res,next) => {
+const removeCart = async (req, res, next) => {
     try {
         const id = req.query.id
         const userId = req.session.user_id
         await cartSchema.updateOne({ userId: new Object(userId) }, { $pull: { item: { _id: new Object(id) } } })
-        msg='Removed From Cart'
+        msg = 'Removed From Cart'
         res.redirect('/cart')
     } catch (error) {
         console.log(error);
         next(error.message)
     }
-    }
+}
 
 ///////LOAD ADD NEW ADDRESS/////////////
 
-const addAddress = async (req, res,next) => {
+const addAddress = async (req, res, next) => {
     try {
         const session = req.session.user_id
         res.render('newAddress', { session, message, msg })
@@ -807,11 +828,11 @@ const addAddress = async (req, res,next) => {
 
 /////// ADD NEW ADDRESS////////
 
-const addNewAddress = async (req, res,next) => {
+const addNewAddress = async (req, res, next) => {
     try {
         const id = req.session.user_id
         const data = req.body
-        if (data.address.trim().length > 3 && data.city.trim().length > 3 &&  data.district.trim().length > 3 &&  data.state.trim().length > 3 &&  data.country.trim().length > 3) {
+        if (data.address.trim().length > 3 && data.city.trim().length > 3 && data.district.trim().length > 3 && data.state.trim().length > 3 && data.country.trim().length > 3) {
             const userData = await User.findOne({ _id: new Object(id) })
             userData.address.push(data)
             await userData.save()
@@ -830,72 +851,71 @@ const addNewAddress = async (req, res,next) => {
 
 //////LOAD CHECK OUT PAGE///////////
 
-const loadChekOut = async (req, res,next) => {
+const loadChekOut = async (req, res, next) => {
     try {
 
-    index = req.query.index
-    const id = req.session.user_id
-    const session = req.session.user_id
-    const cart = await cartSchema.findOne({ userId: session }).populate('item.product')
-    const user = await User.findOne({ _id: session })
-    const coupons = await couponSchema.find()
-    const addressCount = user.address[index]
-    if (cart != null) {
-        if (cart.item != 0) {
-            res.render('checkOut', { session, cart, user, addressCount, coupons})
+        index = req.query.index
+        const id = req.session.user_id
+        const session = req.session.user_id
+        const cart = await cartSchema.findOne({ userId: session }).populate('item.product')
+        const user = await User.findOne({ _id: session })
+        const coupons = await couponSchema.find()
+        const addressCount = user.address[index]
+        if (cart != null) {
+            if (cart.item != 0) {
+                res.render('checkOut', { session, cart, user, addressCount, coupons })
+            } else {
+                res.redirect('/cart')
+                msg = "Your cart is empty"
+            }
         } else {
             res.redirect('/cart')
             msg = "Your cart is empty"
         }
-    } else {
-        res.redirect('/cart')
-        msg = "Your cart is empty"
-    }
     } catch (error) {
         console.log(error);
         next(error.message)
     }
-    
+
 }
 
 
 ////////LOAD PLACE ORDER PAGE///////////
 
-const loadPlaceOrder = async (req, res,next) => {
+const loadPlaceOrder = async (req, res, next) => {
     try {
         const session = req.session.user_id
         let Total
         const pro = await cartSchema.findOne({ userId: session }, { _id: 0 })
-        const user = await User.findOne({_id:session})
+        const user = await User.findOne({ _id: session })
         const wallet = user.wallet
         let walletPay = false
         if (pro.couponDiscount) {
             Total = parseInt(pro.totalPrice) - pro.couponDiscount
-            if(user.wallet){
-                if(user.wallet>=Total){
+            if (user.wallet) {
+                if (user.wallet >= Total) {
                     walletPay = true
                     Total = 0
-                }else{
-                    Total = Total-user.wallet
+                } else {
+                    Total = Total - user.wallet
                 }
             }
 
         } else {
             Total = parseInt(pro.totalPrice)
-            if(user.wallet){
-                if(user.wallet>=Total){
+            if (user.wallet) {
+                if (user.wallet >= Total) {
                     walletPay = true
                     Total = 0
-                }else{
-                    Total = Total-user.wallet
+                } else {
+                    Total = Total - user.wallet
                 }
             }
-            
+
         }
-        console.log(wallet);
-        res.render('placeOrder', { Total, session, msg, message, pro,wallet,walletPay})
+        res.render('placeOrder', { Total, session, msg, message, pro, wallet, walletPay })
         msg = null
-        message=null
+        message = null
     } catch (error) {
         console.log(error.mesage);
         next(error.message)
@@ -904,85 +924,84 @@ const loadPlaceOrder = async (req, res,next) => {
 
 ////////ORDER CONFIRM PAGE//////
 
-const orderConfirm = async (req, res,next) => {
+const orderConfirm = async (req, res, next) => {
 
     try {
         const session = req.session.user_id
         const payment = req.body
         paymentMethod = payment.flexRadioDefault
         const cart = await cartSchema.findOne({ userId: session })
-        const user = await User.findOne({_id:session})
+        const user = await User.findOne({ _id: session })
         let payMoney = cart.couponDiscount ? parseInt(cart.totalPrice) - cart.couponDiscount : parseInt(cart.totalPrice)
-        
+
         req.session.payMoney = payMoney
-        if (payment.flexRadioDefault == 'cashOn') {
-            if(user.wallet){
-                if(user.wallet>=payMoney){
-                    await User.findByIdAndUpdate({_id:session},{$inc:{wallet:-payMoney}})
-                }else{
-                    await User.findByIdAndUpdate({_id:session},{$set:{wallet:0}})
+        if (payment.flexRadioDefault == 'Cash On Delivery') {
+            if (user.wallet) {
+                if (user.wallet >= payMoney) {
+                    await User.findByIdAndUpdate({ _id: session }, { $inc: { wallet: -payMoney } })
+                } else {
+                    await User.findByIdAndUpdate({ _id: session }, { $set: { wallet: 0 } })
                 }
             }
             orderStatus = 1
             res.redirect('/userProfile')
             message = 'Order Placed'
-        }else if(payment.flexRadioDefault == 'Wallet'){
-            if(user.wallet){
-                if(user.wallet>=payMoney){
-                    await User.findByIdAndUpdate({_id:session},{$inc:{wallet:-payMoney}})
-                }else{
-                    await User.findByIdAndUpdate({_id:session},{$set:{wallet:0}})
+        } else if (payment.flexRadioDefault == 'Wallet') {
+            if (user.wallet) {
+                if (user.wallet >= payMoney) {
+                    await User.findByIdAndUpdate({ _id: session }, { $inc: { wallet: -payMoney } })
+                } else {
+                    await User.findByIdAndUpdate({ _id: session }, { $set: { wallet: 0 } })
                 }
             }
             orderStatus = 1
             res.redirect('/userProfile')
             message = 'Order Placed'
-        }else if (payment.flexRadioDefault == 'online') {
-            if(user.wallet){
-                    payMoney = payMoney-user.wallet
+        } else if (payment.flexRadioDefault == 'Online') {
+            if (user.wallet) {
+                payMoney = payMoney - user.wallet
             }
-                const currencyMap = {
-                    840: "USD",
-                    978: "EUR",
-                    826: "GBP",
-                };
-                const currencyCode = currencyMap["840"];
+            const currencyMap = {
+                840: "USD",
+                978: "EUR",
+                826: "GBP",
+            };
+            const currencyCode = currencyMap["840"];
 
-                const amount = {
-                    currency: currencyCode,
-                    total: payMoney,
-                };
+            const amount = {
+                currency: currencyCode,
+                total: payMoney,
+            };
 
-                
-                const create_payment_json = {
-                    intent: "sale",
-                    payer: {
-                        payment_method: "paypal",
+
+            const create_payment_json = {
+                intent: "sale",
+                payer: {
+                    payment_method: "paypal",
+                },
+                redirect_urls: {
+                    return_url: process.env.SITEURL + "/success",
+                    cancel_url: process.env.SITEURL + "/checkout",
+                },
+                transactions: [
+                    {
+                        amount,
+                        description: "Washing Bar soap",
                     },
-                    redirect_urls: {
-                        return_url: process.env.SITEURL+"/success",
-                        cancel_url: process.env.SITEURL+"/checkout",
-                    },
-                    transactions: [
-                        {
-                            amount,
-                            description: "Washing Bar soap",
-                        },
-                    ],
-                };
-                console.log("aaa");
+                ],
+            };
 
-                paypal.payment.create(create_payment_json, function (error, payment) {
-                    if (error) {
-                        throw error;
-                    } else {
-                        for (let i = 0; i < payment.links.length; i++) {
-                            if (payment.links[i].rel === "approval_url") {
-                                res.redirect(payment.links[i].href);
-                            }
+            paypal.payment.create(create_payment_json, function (error, payment) {
+                if (error) {
+                    throw error;
+                } else {
+                    for (let i = 0; i < payment.links.length; i++) {
+                        if (payment.links[i].rel === "approval_url") {
+                            res.redirect(payment.links[i].href);
                         }
                     }
-                });
+                }
+            });
 
         } else {
             res.redirect('/placeOrder')
@@ -998,17 +1017,17 @@ const orderConfirm = async (req, res,next) => {
 
 ///////////////CONFIRM PAYMENT////////////////
 
-const confirmPayment = async (req, res,next) => {    
+const confirmPayment = async (req, res, next) => {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
     const session = req.session.user_id
     const cart = await cartSchema.findOne({ userId: session })
-    const user = await User.findOne({_id:session})
-    if(user.wallet){
-        if(user.wallet>=req.session.payMoney){
-            await User.findByIdAndUpdate({_id:session},{$inc:{wallet:req.session.payMoney}})
-        }else{
-            await User.findByIdAndUpdate({_id:session},{$set:{wallet:0}})
+    const user = await User.findOne({ _id: session })
+    if (user.wallet) {
+        if (user.wallet >= req.session.payMoney) {
+            await User.findByIdAndUpdate({ _id: session }, { $inc: { wallet: req.session.payMoney } })
+        } else {
+            await User.findByIdAndUpdate({ _id: session }, { $set: { wallet: 0 } })
         }
     }
     const execute_payment_json = {
@@ -1031,7 +1050,6 @@ const confirmPayment = async (req, res,next) => {
                 console.log(error.response);
                 throw error;
             } else {
-                console.log(JSON.stringify(payment));
                 orderStatus = 1;
                 res.redirect("/userProfile");
                 message = 'Order Placed'
@@ -1044,7 +1062,7 @@ const confirmPayment = async (req, res,next) => {
 
 //////SHOW ORDERS///////////
 
-const showOrders = async (req, res,next) => {
+const showOrders = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const orderId = req.query.orderid
@@ -1059,7 +1077,7 @@ const showOrders = async (req, res,next) => {
 
 ///////////SHOW ORDER HISTORY////////////
 
-const loadOrderHistory = async (req, res,next) => {
+const loadOrderHistory = async (req, res, next) => {
     try {
 
         const session = req.session.user_id
@@ -1084,7 +1102,7 @@ const loadOrderHistory = async (req, res,next) => {
 
         })
         if (orders) {
-            res.render('orderHistory', { session, orders, proCount,message })
+            res.render('orderHistory', { session, orders, proCount, message })
             message = null
         } else {
             res.redirect('/userProfile')
@@ -1100,18 +1118,18 @@ const loadOrderHistory = async (req, res,next) => {
 
 //////CANCEL ORDERS/////////
 
-const cancelOrder = async (req, res,next) => {
+const cancelOrder = async (req, res, next) => {
     try {
         const orderId = req.query.orderid
         const session = req.session.user_id
         const orders = await orderSchema.findOne({ _id: orderId }).populate('item.product')
-        const user = await User.findOne({_id:session})
+        const user = await User.findOne({ _id: session })
         await orderSchema.updateOne({ _id: orderId }, { $set: { user_cancelled: true } })
-        if(orders.paymentType=='online'||orders.paymentType=='Wallet'){
-            if(user.wallet){
-                await User.findByIdAndUpdate({_id:session},{$inc:{wallet:orders.totalPrice}})
-            }else{
-                await User.findByIdAndUpdate({_id:session},{$set:{wallet:orders.totalPrice}})
+        if (orders.paymentType == 'Online' || orders.paymentType == 'Wallet') {
+            if (user.wallet) {
+                await User.findByIdAndUpdate({ _id: session }, { $inc: { wallet: orders.totalPrice } })
+            } else {
+                await User.findByIdAndUpdate({ _id: session }, { $set: { wallet: orders.totalPrice } })
             }
         }
         orders.item.forEach(async (item) => {
@@ -1130,25 +1148,25 @@ const cancelOrder = async (req, res,next) => {
 
 ///////////RETURN ORDER//////////////
 
-const returnOrder = async (req, res,next) => {
+const returnOrder = async (req, res, next) => {
     try {
         const orderId = req.query.id
         const userId = req.session.user_id
         const order = await orderSchema.findOne({ _id: orderId })
         const sale = await salesSchema.find({ orders: orderId })
-        const user = await User.findOne({_id:userId})
+        const user = await User.findOne({ _id: userId })
         const Price = order.totalPrice
-        if(user.wallet){
-            await User.findByIdAndUpdate({_id:userId},{$inc:{wallet:Price}})
-        }else{
-            await User.findByIdAndUpdate({_id:userId},{$set:{wallet:Price}})
+        if (user.wallet) {
+            await User.findByIdAndUpdate({ _id: userId }, { $inc: { wallet: Price } })
+        } else {
+            await User.findByIdAndUpdate({ _id: userId }, { $set: { wallet: Price } })
         }
-        await salesSchema.deleteOne({orders:orderId})
-        await orderSchema.findByIdAndDelete({_id:orderId})
-        
+        await salesSchema.deleteOne({ orders: orderId })
+        await orderSchema.findByIdAndDelete({ _id: orderId })
+
         res.redirect("/orderHistory")
         message = 'Order Returned'
-        
+
     } catch (error) {
         console.log(error.message);
         next(error.message)
@@ -1158,13 +1176,13 @@ const returnOrder = async (req, res,next) => {
 
 ////////LOAD SELECT ADDRESS PAGE////////////
 
-const loadSelectAddress = async (req, res,next) => {
+const loadSelectAddress = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const user = await User.findOne({ _id: session })
-        res.render('selectAddress', { session, user,msg,message })
-        message=null
-        msg=null
+        res.render('selectAddress', { session, user, msg, message })
+        message = null
+        msg = null
     } catch (error) {
         console.log(error.message);
         next(error.message)
@@ -1173,13 +1191,13 @@ const loadSelectAddress = async (req, res,next) => {
 
 /////////LOAD MORE ADDRESS PAGE////////
 
-const loadMoreAddress = async (req, res,next) => {
+const loadMoreAddress = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const user = await User.findOne({ _id: session })
         res.render('moreAddress', { session, user, message, msg })
-        message=null
-        msg=null
+        message = null
+        msg = null
     } catch (error) {
         console.log(error.message);
         next(error.message)
@@ -1188,13 +1206,13 @@ const loadMoreAddress = async (req, res,next) => {
 
 ///////////LOAD WISHLIST//////////////
 
-const loadWishList = async (req, res,next) => {
+const loadWishList = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const wishlist = await User.findOne({ _id: session }).populate('wishlist')
-        res.render('wishList', { session, wishlist,message,msg })
-        message=null
-        msg=null
+        res.render('wishList', { session, wishlist, message, msg })
+        message = null
+        msg = null
     } catch (error) {
         console.log(error.message);
         next(error.message)
@@ -1203,7 +1221,7 @@ const loadWishList = async (req, res,next) => {
 
 //////////ADD TO WISHLIST////////////
 
-const addToWishlist = async (req, res,next) => {
+const addToWishlist = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const productId = req.query.id
@@ -1235,7 +1253,7 @@ const addToWishlist = async (req, res,next) => {
 
 /////////////REMOVE FROM WISHLIST//////
 
-const removeWishlist = async (req, res,next) => {
+const removeWishlist = async (req, res, next) => {
     try {
         const session = req.session.user_id
         const product = req.query.id
@@ -1251,7 +1269,7 @@ const removeWishlist = async (req, res,next) => {
 
 ////////////LOAD SHOP PAGE/////////////
 
-const loadShopPage = async (req, res,next) => {
+const loadShopPage = async (req, res, next) => {
     try {
         let page = 1
         if (req.query.page) {
@@ -1262,8 +1280,8 @@ const loadShopPage = async (req, res,next) => {
         const product = await productSchema.find({ is_show: true }).limit(20).skip((page - 1) * 20).exec()
         const category = await categoryModel.find()
         res.render('shopPage', { session, product, category, message, msg, totalPages: Math.ceil(count / 20) })
-        message=null
-        msg=null
+        message = null
+        msg = null
     } catch (error) {
         console.log(error.message);
         next(error.message)
@@ -1272,10 +1290,10 @@ const loadShopPage = async (req, res,next) => {
 
 ///////////LOAD SHIPPING POLICY//////////
 
-const loadShipping = async(req,res,next)=>{
+const loadShipping = async (req, res, next) => {
     try {
         const session = req.session.user_id
-        res.render('shippingPolicy',{session})
+        res.render('shippingPolicy', { session })
     } catch (error) {
         console.log(error.message);
         next(error)
@@ -1285,10 +1303,10 @@ const loadShipping = async(req,res,next)=>{
 
 ///////////LOAD TERMS AND CONDITIONS//////////
 
-const loadReturns = async(req,res,next)=>{
+const loadReturns = async (req, res, next) => {
     try {
         const session = req.session.user_id
-        res.render('termsConditions',{session})
+        res.render('termsConditions', { session })
     } catch (error) {
         console.log(error.message);
         next(error)
@@ -1298,10 +1316,10 @@ const loadReturns = async(req,res,next)=>{
 
 ///////////LOAD PRIVACY POLICY//////////
 
-const loadPrivacy = async(req,res,next)=>{
+const loadPrivacy = async (req, res, next) => {
     try {
         const session = req.session.user_id
-        res.render('privacyPolicy',{session})
+        res.render('privacyPolicy', { session })
     } catch (error) {
         console.log(error.message);
         next(error)
@@ -1310,16 +1328,16 @@ const loadPrivacy = async(req,res,next)=>{
 
 ///////////COUPON USING//////////
 
-const addCoupon = async (req, res,next) => {
+const addCoupon = async (req, res, next) => {
     try {
         let amount
         const code = req.body.coupon
         const session = req.session.user_id
         const cart = await cartSchema.findOne({ userId: session }, { totalPrice: 1 })
         const coupon = await couponSchema.findOne({ couponCode: code })
-        
-            if (coupon) {
-                if (cart.totalPrice > coupon.minPurchase) {
+
+        if (coupon) {
+            if (cart.totalPrice > coupon.minPurchase) {
                 const today = new Date()
 
                 if (coupon.endDate > today) {
@@ -1339,7 +1357,7 @@ const addCoupon = async (req, res,next) => {
                     res.json({ expired: true })
                 }
             } else {
-               
+
                 res.json({ lessPrice: true })
             }
         } else {
@@ -1356,12 +1374,12 @@ const addCoupon = async (req, res,next) => {
 
 ////LOAD CONTACT PAGE////////////
 
-const loadContactPage = async(req,res)=>{
+const loadContactPage = async (req, res) => {
     try {
         const session = req.session.user_id
-        res.render('contactPage',{session,message,msg})
-        message=null
-        msg=null
+        res.render('contactPage', { session, message, msg })
+        message = null
+        msg = null
     } catch (error) {
         console.log(error.message);
     }
@@ -1372,13 +1390,13 @@ const loadContactPage = async(req,res)=>{
 
 const sendMessage = async (req, res) => {
     try {
-        let messageBody=req.body
+        let messageBody = req.body
         if (req.body.name.trim().length == 0 || req.body.email.trim().length == 0 || req.body.subject.trim().length == 0 || req.body.subject.trim().length == 0) {
             res.redirect('/contactPage')
             msg = 'Please fill the fields'
         } else {
             if (messageBody) {
-                
+
                 const mailtransport = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
                     port: 465,
@@ -1392,11 +1410,11 @@ const sendMessage = async (req, res) => {
                     from: messageBody.email,
                     to: "freshorgani@gmail.com",
                     subject: "Organi Fresh Messages",
-                    text:`
-                    Name: ${messageBody.name}
-                    Email: ${messageBody.email}
-                    Subject: ${messageBody.subject}
-                    Message: ${messageBody.message}`
+                    text: `
+Name: ${messageBody.name}
+Email: ${messageBody.email}
+Subject: ${messageBody.subject}
+Message: ${messageBody.message}`
                 }
                 mailtransport.sendMail(details, (err) => {
                     if (err) {
@@ -1407,7 +1425,7 @@ const sendMessage = async (req, res) => {
                 })
             }
             res.redirect('/contactPage')
-                message = 'Message Sent'
+            message = 'Message Sent'
         }
 
     } catch (error) {
@@ -1418,7 +1436,7 @@ const sendMessage = async (req, res) => {
 
 //////PRODUCT FILTER///////////
 
-const productFilter = async (req, res,next) => {
+const productFilter = async (req, res, next) => {
     try {
 
         let product
@@ -1517,7 +1535,6 @@ const productFilter = async (req, res,next) => {
         } else {
             Data[0] = product
         }
-        console.log(Data);
         res.json({ Data })
     } catch (error) {
         console.log(error.message);

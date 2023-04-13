@@ -160,15 +160,17 @@
                             let prices = []
                             let filterprice = []
                             function category(ID) {
-
+                                console.log(ID);
 
                                 if ($(`#${ID}`).is(':checked') == true) {
                                     categorys[n] = $(`#${ID}`).val()
                                     n++
                                     console.log(categorys);
+                                    
                                     console.log($(`#${ID}`).is(':checked'))
                                 } else {
                                     console.log($(`#${ID}`).is(':checked'))
+                                    
                                     console.log(categorys.indexOf(`${$(`#${ID}`).val()}`));
                                     let index = categorys.indexOf(`${$(`#${ID}`).val()}`)
                                     categorys.splice(index, 1)

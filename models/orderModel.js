@@ -49,6 +49,12 @@ const orderSchema = mongoose.Schema({
       paymentType:{
         type:String
       },
+      orderId:{
+        type:String
+      },
+      paymentId:{
+        type:String
+      },
       address:{
         type:Array
       }

@@ -50,4 +50,15 @@
 </div>
 </div>
 </div>
+<%if(message!=null){ %>
+    <script>
+        new Swal({
+            title: "Success",
+            text: "<%=message%>",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    <%}%>
 <%- include('../layouts/userFooternull.ejs') %>

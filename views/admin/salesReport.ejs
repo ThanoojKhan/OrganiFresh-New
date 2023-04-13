@@ -77,21 +77,21 @@
                   Category
                 </a>
               </li>
-              
-              <li class="nav-item dropdown mt-3">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-cog"></i>
-                    <span>
-                        More <i class="fas fa-angle-down"></i>
-                    </span>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle mt-1" href="#" id="navbarDropdown" role="button"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-cog"></i>
+                  <span class="mt-1">
+                    More <i class="fas fa-angle-down"></i>
+                  </span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/admin/coupon">Coupon</a>
-                    <a class="dropdown-item" href="/admin/banner">Home Page Controls</a>
-                    <a class="dropdown-item" href="/admin/salesReport">Sales Report</a>
+                  <a class="dropdown-item" href="/admin/coupon">Coupon</a>
+                  <a class="dropdown-item" href="/admin/banner">Home Page Controls</a>
+                  <a class="dropdown-item" href="/admin/salesReport">Sales Report</a>
                 </div>
-            </li>
+              </li>
 
             </ul>
             <ul class="navbar-nav">
@@ -106,111 +106,118 @@
       </nav>
 
 
-
-
       <div class="container">
-      <div class="col-12 tm-block-col"><br>
-        <div class="d-flex justify-content-center mt-4 mb-4">
-          <h3>Sales Report</h3>
-        </div>
-        <div class="text-center tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <form id="sales-filter">
-              <label for="filter"><h4> Filter by:</h4></label>
-              <select id="filter" name="filter" style="height: 40px;border-radius: 10px;">
-                <option value="all">All Time</option>
-                <option value="weekly">This Week</option>
-                <option value="yearly">This Year</option>
-              </select>
-              <button type="submit" class="btn-primary" style="height: 40px; border-radius: 10px;">Generate Report</button>
-            </form>
-            <div>
+        <div class="col-12 tm-block-col"><br>
+          <div class="d-flex justify-content-center mt-4 mb-4">
+            <h3>Sales Report</h3>
+          </div>
+          <div class="text-center tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <form id="sales-filter">
+                <label for="filter">
+                  <h4> Filter by:</h4>
+                </label>
+                <select id="filter" name="filter" style="height: 40px;border-radius: 10px;">
+                  <option value="all">All Time</option>
+                  <option value="weekly">This Week</option>
+                  <option value="yearly">This Year</option>
+                </select>
+                <button type="submit" class="btn-primary" style="height: 40px; border-radius: 10px;">Generate
+                  Report</button>
+              </form>
+              <div>
+                <button type="button" class="btn-dark" style="height: 40px; border-radius: 10px;"
+                  onclick="return ExportToExcel()">Export
+                  to Excel </button>
+                <button type="button" class="" style="height: 40px; border-radius: 10px;"
+                  onclick="return printTable()">Print
+                </button>
+              </div>
+            </div>
 
-              <button type="button" class="btn-dark" style="height: 40px; border-radius: 10px;" onclick="return ExportToExcel()">Export
-                to Excel </button>
-            <button type="button" class="" style="height: 40px; border-radius: 10px;" onclick="return printTable()">Print
-            </button>
+            <table class="table" id="salesTable">
+              <thead>
+                <tr>
+                  <th>Order Id</th>
+                  <th>Payment Id</th>
+                  <th>Customer</th>
+                  <th>Location</th>
+                  <th>Order Date</th>
+                  <th>Net Amount</th>
+                  <th>Payment Mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%if(sales!=0){%>
+                  <%let i=1%>
+                    <%sales.forEach(sales=> {%>
+                      <tr>
+                        <td>
+                          <%=sales.orders[0].orderId%>
+                        </td>
+                        <td>
+                          <%=sales.orders[0].paymentId%>
+                        </td>
+                        <td>
+                          <%=sales.userId.username%>
+                        </td>
+                        <td>
+                          <%=sales.location%>
+                        </td>
+                        <td>
+                          <%=sales.date.toDateString()%>
+                        </td>
+                        <td>
+                          <%=sales.totalSales%>
+                        </td>
+                        <td>
+                          <%=sales.orders[0].paymentType%>
+                        </td>
+                      </tr>
+                      <%i++%>
+                        <%})%>
+                          <%}else{%>
+                            <tr>
+                              <td>null</td>
+                            </tr>
+                            <%}%>
+              </tbody>
+            </table>
+            <div class="clearfix">
+              <ul class="pagination ">
+                <%for(let j=1;j<=totalPages;j++){%>
+                  <a href="?page=<%=j%>" class="text-white btn-sm btn-secondary mr-1">
+                    <%=j%>
+                  </a>
+                  <%}%>
+              </ul>
             </div>
           </div>
-
-            
-          <table class="table" id="salesTable">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Customer</th>
-                <th>Location</th>
-                <th>Order Date</th>
-                <th>Net Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%if(sales!=0){%>
-                <%let i=1%>
-                  <%sales.forEach(sales=> {%>
-                    <tr>
-          
-                      <td>
-                        <%=i%>
-                      </td>
-                      <td>
-                        <%=sales.userId.username%>
-                      </td>
-                      <td>
-                        <%=sales.location%>
-                      </td>
-                      <td>
-                        <%=sales.date.toDateString()%>
-                      </td>
-                      <td>
-                        <%=sales.totalSales%>
-                      </td>
-                    </tr>
-                    <%i++%>
-                      <%})%>
-          
-                        <%}else{%>
-                          <tr>
-                            <td>null</td>
-                          </tr>
-                          <%}%>
-          
-            </tbody>
-          </table>
-          <div class="clearfix">
-            <ul class="pagination ">
-              <%for(let j=1;j<=totalPages;j++){%>
-                <li class="page-item"><a href="?page=<%=j%>" class="page-link"><%=j%></a></li>
-               <%}%>
-            </ul>
         </div>
-          
-        </div>
-    </div>
-</div>
+      </div>
 
 
 
 
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-<script>
-    function ExportToExcel(type, fn, dl) {
-    var elt = document.getElementById("salesTable");
-    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-    return dl ?
-        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-        XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
-}
+      <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+      <script>
+        function ExportToExcel(type, fn, dl) {
+          var elt = document.getElementById("salesTable");
+          var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+          return dl ?
+            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+            XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+        }
 
-function printTable() {
-    var table = document.getElementById("salesTable");
-    var newWin = window.open('', 'Print-Window');
-    newWin.document.open();
-    newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
-    newWin.document.close();
-    setTimeout(function () { newWin.close(); }, 10);
-  }
-</script>
+        function printTable() {
+          var table = document.getElementById("salesTable");
+          var newWin = window.open('', 'Print-Window');
+          newWin.document.open();
+          newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
+          newWin.document.close();
+          setTimeout(function () { newWin.close(); }, 10);
+        }
+      </script>
 
 
       <%- include('../layouts/adminFooter.ejs') %>

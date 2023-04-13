@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+
+
+
+
+
+
 body {
   font-family: sans-serif;
   background: white;
@@ -18,6 +24,36 @@ input {
   outline: none;
   border: none;
   background: transparent;
+}
+
+.user-box {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1rem;
+  color: #999;
+  pointer-events: none;
+  transition: 0.2s ease-out;
+}
+
+.user-box input:focus + label,
+.user-box input:valid + label {
+  top: -1.5rem;
+  left: 0;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.user-box input {
+  width: 100%;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  border: none;
 }
 
 .login-box {
@@ -203,27 +239,27 @@ input {
   <h2>Signup</h2>
   <form action="/signup" class="form" method="post" id="form1">
     <div class="user-box">
-      <input name="username" class="input" type="text" id="username" required="">
+      <input name="username" class="input" type="text" id="username">
       <label class="label" for="">Username</label>
     </div>
     <!-- /.user-box -->
     <div class="user-box">
-      <input class="input" type="email" name="email" id="email" required="">
+      <input class="input" type="email" name="email" id="email">
       <label class="label" for="">Email</label>
     </div>
     <!-- /.user-box -->
     <div class="user-box">
-      <input class="input" type="tel" name="phone" id="phone" required="">
+      <input class="input" type="tel" name="phone" id="phone">
       <label class="label" for="">Mobile Number</label>
     </div>
     <!-- /.user-box -->
     <div class="user-box">
-      <input class="input" type="password" name="password" id="password" required="">
+      <input class="input" type="password" name="password" id="password">
       <label class="label" for="">Password</label>
     </div>
     <!-- /.user-box -->
     <div class="user-box">
-      <input class="input" type="password" name="Rpassword" id="Rpassword" required="">
+      <input class="input" type="password" name="Rpassword" id="Rpassword">
       <label class="label" for="">Confirm Password</label>
     </div>
     <!-- /.user-box -->
@@ -236,13 +272,13 @@ input {
         <%= msg %>
       </small>
       <% } %>
-    <a href="#" onclick="document.getElementById('form1').submit() ">
+    <button type="submit">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
       Register
-    </a><br>
+    </button><br>
     
     
     <a href="/login">
@@ -256,44 +292,78 @@ input {
 <!-- /.login-box -->
 
 
-  <script>
-    const form = document.getElementById('form1');
-    const usernameInput = document.getElementById('form3Example1c username');
-    const emailInput = document.getElementById('form3Example3c email');
-    const phoneInput = document.getElementById('form3Example3c phone');
-    const passwordInput = document.getElementById('form3Example4c password');
-    const RpasswordInput = document.getElementById('form3Example4cd Rpassword');
-    const errorElement = document.querySelector('.error');
+<script>
+  const form = document.getElementById("form1");
+  const username = document.getElementById("username");
+  const email = document.getElementById("email");
+  const phone = document.getElementById("phone");
+  const password = document.getElementById("password");
+  const Rpassword = document.getElementById("Rpassword");
 
-    form.addEventListener('submit', (e) => {
-      let messages = [];
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^\d{10}$/;
-      const regex_password = /^(?=.?[A-Z])(?=.[a-z])(?=.*[0-9]){8,16}/gm
-      if (usernameInput.value.trim().length === 0 && phoneInput.value.trim().length === 0 && emailInput.value.trim().length === 0 && passwordInput.value.trim().length === 0 && RpasswordInput.value.trim().length === 0) {
-        messages.push('Fill all the fields');
-      } else if (usernameInput.value.trim().length === 0) {
-        messages.push('Username is required');
-      } else if (!emailRegex.test(emailInput.value.trim())) {
-        messages.push('Email is invalid');
-      } else if (phoneInput.value.trim().length === 0) {
-        messages.push('Phone number is required');
-      }
-      else if (!phoneRegex.test(phoneInput.value.trim())) {
-        messages.push('Phone number is invalid');
-      } else if (passwordInput.value.length < 8) {
-        messages.push('Password must be at least 8 characters long');
-      } else if (!regex_password.test(passwordInput.value.trim())) {
-        messages.push('Use strong password');
-      } else if (passwordInput.value !== RpasswordInput.value.trim()) {
-        messages.push('Passwords do not match');
-      }
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-      if (messages.length > 0) {
-        e.preventDefault();
-        errorElement.innerText = messages.join(', ');
-      }
-    });
-  </script>
+    if (username.value.trim() === "") {
+      showError(username, "Username is required");
+    } else if (username.value.trim().length < 4) {
+      showError(username, "Username must be at least 4 characters long");
+    } else {
+      showSuccess(username);
+    }
 
+    if (email.value.trim() === "") {
+      showError(email, "Email is required");
+    } else if (!isValidEmail(email.value.trim())) {
+      showError(email, "Invalid email address");
+    } else {
+      showSuccess(email);
+    }
+
+    if (phone.value.trim() === "") {
+      showError(phone, "Mobile number is required");
+    } else if (!isValidPhone(phone.value.trim())) {
+      showError(phone, "Invalid mobile number");
+    } else {
+      showSuccess(phone);
+    }
+
+    if (password.value.trim() === "") {
+      showError(password, "Password is required");
+    } else if (password.value.trim().length < 8) {
+      showError(password, "Password must be at least 8 characters long");
+    } else {
+      showSuccess(password);
+    }
+
+    if (Rpassword.value.trim() === "") {
+      showError(Rpassword, "Confirm password is required");
+    } else if (Rpassword.value.trim() !== password.value.trim()) {
+      showError(Rpassword, "Passwords do not match");
+    } else {
+      showSuccess(Rpassword);
+    }
+  });
+
+  function showError(input, message) {
+    const formControl = input.parentElement;
+    formControl.className = "user-box error";
+    const small = formControl.querySelector("small");
+    small.innerText = message;
+  }
+
+  function showSuccess(input) {
+    const formControl = input.parentElement;
+    formControl.className = "user-box success";
+  }
+
+  function isValidEmail(email) {
+    const regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
+  }
+
+  function isValidPhone(phone) {
+    const regex = /^\d{10}$/;
+    return regex.test(phone);
+  }
+</script>
   <%- include('../layouts/loginFooter.ejs')%>

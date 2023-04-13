@@ -76,11 +76,11 @@
             </a>
           </li>
            
-          <li class="nav-item dropdown mt-3">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mt-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-cog"></i>
-                <span>
+                <span class="mt-1">
                     More <i class="fas fa-angle-down"></i>
                 </span>
             </a>
@@ -102,7 +102,6 @@
       </div>
     </div>
   </nav>
-
 
 
 
@@ -130,23 +129,22 @@
                 </div>
                 <div class="form-group mb-3">
                   <label for="description">Description</label>
-                  <input name="description" type="text" id="description" value="<%= product.description %>" class="form-control" rows="3"/>
+                  <input name="description" type="text" id="description" value="<%= product.description %>" class="form-control" />
                 </div>
                 <div class="form-group mb-3">
                   <label for="name">Price</label>
                   <input name="price" type="float" id="price" value="<%= product.price %>" class="form-control" required />
                 </div>
                 <div class="form-group mb-3">
-                  <label for="name">Stocks</label>
+                  <label for="name">Stock</label>
                   <input name="stocks" type="number" id="stocks" value="<%= product.stocks %>" class="form-control" required />
                 </div>
                 <div class="form-group mb-3">
                   <label for="category">Category</label>
                   <select name="category" class="custom-select tm-select-accounts" id="category">
-                    <option selected value="<%=product.category.category%>">
-                      Select Category
+                    <option selected value="<%=product.category._id%>">
+                      <%=product.category.category%>
                     </option>
-                    <% console.log(product.category.category); %>
                     <% if(category.length>0){
                       for(let i=0;i<category.length;i++){ %>
                         <option value="<%=category[i]._id%>">
@@ -159,13 +157,45 @@
 
 
                 <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
-                  <div class="tm-product-img-dummy mx-auto" style="background-image: url(/proImage/<%=product.image[0]%>);">
+                
+                  <div class="tm-product-img-dummy mx-auto" style="width: 300px;"><img  src="/proImage/<%=product.image[0]%>"
+                      class="tm-product-img-dummy mx-auto" alt="">
+                  </div>
+                  <div class="custom-control custom-checkbox mx-auto text-center text-white">
+                    <input type="checkbox" class="custom-control-input " id="customCheck" name="updateImage" value="0">
+                    <label class="custom-control-label" for="customCheck">Select to update Image 1</label>
                   </div>
                   <div class="custom-file mt-3 mb-3">
-                    <input type="file" name="image" class="btn btn-primary btn-block mx-auto" value="<%= product.image %>"
-                      onchange="return fileValidation()" multiple id="customFile2" />
+                    <input type="file" style="width: 300px;" name="image" class="btn btn-primary btn-block mx-auto"
+                      value="<%= product.image[0] %>" onchange="return fileValidation1()" id="customFile1" />
                   </div>
+                
+                  <div class="tm-product-img-dummy mx-auto" style="width: 300px;"><img src="/proImage/<%=product.image[1]%>"
+                      class="tm-product-img-dummy mx-auto" alt="">
+                  </div>
+                  <div class="custom-control custom-checkbox mx-auto text-center text-white">
+                    <input type="checkbox" class="custom-control-input " id="customCheck1" name="updateImage" value="1">
+                    <label class="custom-control-label" for="customCheck1">Select to update Image 2</label>
+                  </div>
+                  <div class="custom-file mt-3 mb-3">
+                    <input type="file" style="width: 300px;" name="image" class="btn btn-primary btn-block mx-auto"
+                      value="<%= product.image[1] %>" onchange="return fileValidation2()" id="customFile2" />
+                  </div>
+                
+                  <div class="tm-product-img-dummy mx-auto" style="width: 300px;"><img src="/proImage/<%=product.image[2]%>"
+                      class="tm-product-img-dummy mx-auto" alt="">
+                  </div>
+                  <div class="custom-control custom-checkbox mx-auto text-center text-white">
+                    <input type="checkbox" class="custom-control-input " id="customCheck2" name="updateImage" value="2">
+                    <label class="custom-control-label" for="customCheck2">Select to update Image 3</label>
+                  </div>
+                  <div class="custom-file mt-3 mb-3">
+                    <input type="file" style="width: 300px;" name="image" class="btn btn-primary btn-block mx-auto"
+                      value="<%= product.image[2] %>" onchange="return fileValidation3()" id="customFile3" />
+                  </div>
+
                 </div>
+
                 <div class="col-12 justify-content-center">
                   <button type="submit" class="btn btn-primary btn-block text-uppercase">Update Product</button>
                   <%if(msg!=null){%>
@@ -249,10 +279,6 @@
         messages.push('Stocks should be in number')
       }
 
-      if (image.value.length === 0) {
-        messages.push('Images is required');
-      }
-
       if (messages.length > 0) {
         e.preventDefault();
         errorElement.innerText = messages.join(', ');
@@ -263,9 +289,9 @@
 
 
 
-    function fileValidation() {
+    function fileValidation1() {
       const fileInput =
-        document.getElementById('customFile2');
+        document.getElementById('customFile1');
 
       const filePath = fileInput.value;
 
@@ -275,8 +301,8 @@
         alert('Invalid file type');
         fileInput.value = '';
         return false;
-      }else if(fileInput.files.length !=3){
-              alert('Please add 3 images');
+      }else if(fileInput.files.length !=1){
+              alert('Please add an image');
               fileInput.value = '';
               return false;
             }
@@ -294,6 +320,74 @@
         }
       }
     }
+
+    function fileValidation2() {
+      const fileInput =
+        document.getElementById('customFile2');
+
+      const filePath = fileInput.value;
+
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+      if (!allowedExtensions.exec(filePath)) {
+        alert('Invalid file type');
+        fileInput.value = '';
+        return false;
+      }else if(fileInput.files.length !=1){
+              alert('Please add an image');
+              fileInput.value = '';
+              return false;
+            }
+      else {
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById(
+              'imagePreview').innerHTML =
+              '<img src="' + e.target.result
+              + '"/>';
+          };
+
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      }
+    }
+
+    function fileValidation3() {
+      const fileInput =
+        document.getElementById('customFile3');
+
+      const filePath = fileInput.value;
+
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+      if (!allowedExtensions.exec(filePath)) {
+        alert('Invalid file type');
+        fileInput.value = '';
+        return false;
+      }else if(fileInput.files.length !=1){
+              alert('Please add an image');
+              fileInput.value = '';
+              return false;
+            }
+      else {
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById(
+              'imagePreview').innerHTML =
+              '<img src="' + e.target.result
+              + '"/>';
+          };
+
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      }
+    }
+
+
+
+
   </script>
 
   <%- include('../layouts/adminFooter.ejs') %>

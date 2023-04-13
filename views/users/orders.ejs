@@ -3,15 +3,17 @@
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-lg-10 col-xl-8">
                 <div class="card" style="border-radius: 10px;">
-                    <div class="card-header px-4 py-5 bg-primary text-white d-flex justify-content-between align-items-center">
+                    <div
+                        class="card-header px-4 py-5 bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-white">Order Status</h5>
                         <span>Order For:&nbsp;
                             <%=order.userId.username%>
                         </span>
-                        <button type="button" class="bg-secondary" style="height: 40px; border-radius: 10px;" onclick="return printTable()">Print Order
+                        <button type="button" class="bg-secondary" style="height: 40px; border-radius: 10px;"
+                            onclick="return printTable()">Print Order
                         </button>
                     </div>
-                    <div class="card-body p-4" >
+                    <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0" style="color: #82ae46;"><b>Order Details</b> </p>
                         </div>
@@ -21,8 +23,8 @@
                                     <%order.item.forEach(item=> {%>
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <img src="/proImage/<%=item.product.image[0]%>" style="height: 70px;" class="img-fluid"
-                                                    alt="Phone">
+                                                <img src="/proImage/<%=item.product.image[0]%>" style="height: 70px;"
+                                                    class="img-fluid" alt="Phone">
                                             </div>
                                             <div
                                                 class="col-md-2 text-center d-flex justify-content-center align-items-center">
@@ -51,7 +53,6 @@
                                         <%discount +=item.price*item.quantity%>
                                             <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                                             <%})%>
-
                                                 <%if(order.is_delivered==true||order.admin_cancelled==true||order.user_cancelled==true){%>
                                                     <div class="row d-flex align-items-center">
                                                         <div class="col-md-12">
@@ -89,26 +90,22 @@
                                                             </div>
                                                         </div>
                                                         <%}%>
-
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-between pt-2">
                             <p class="text-muted mb-0">Order Date : <%= order.start_date %>
-
                                     <p class="text-muted mb-0"><span class="fw-bold me-4">Order Amount &nbsp; </span>₹
                                         <%= order.totalPrice %>
                                     </p>
                         </div>
-
                         <div class="d-flex justify-content-between pt-2">
                             <p class="text-muted mb-0"></p>
                             <p class="text-muted mb-0"><span class="fw-bold me-4">Discount
                                     &nbsp;</span><%=discount-order.totalPrice%></p>
                         </div>
-
                         <div class="d-flex justify-content-between  pt-2 mb-5">
-                            <p class="text-muted mb-0">Order Number : <%= order.orderCount %>
+                            <p class="text-muted mb-0">Order Id : <%= order.orderId %>
                             </p>
                             <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges&nbsp;</span> Free</p>
                         </div>
@@ -120,7 +117,7 @@
                                 <% const returnDate=new Date(deliveryDate.getTime() + (14 * 24 * 60 * 60 * 1000)); %>
                                     <% const currentDate=new Date(); %>
                                         <%if(currentDate<=returnDate){%>
-                                            <a href="/returnOrder?id=<%=order._id%>" class="btn btn-warning">Return
+                                            <a href="/returnOrder?id=<%=order._id%>" class="btn btn-warning" onclick="return confirm('Are you sure you want to return this order?');">Return
                                                 Order</a>
                                             <%}%>
                                                 <%}%>
@@ -137,52 +134,56 @@
     </div>
 
 
+    <div style="display: none;" id="order">
+        <table>
+            <thead>
+                <tr><br><br><br>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </th>
+                    <th>&nbsp; &nbsp;&nbsp; &nbsp; Image</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Product Name</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Quantity</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
+                    <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through order items -->
+                <% order.item.forEach(item=> { %>
+                    <tr>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
 
+                        <td><br><br>
+                            <img src="/proImage/<%= item.product.image[0] %>" alt="Product Image" style="height: 70px;">
+                        </td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%= item.product.title %>
+                        </td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %>
+                        </td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ₹ <%= item.price %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+        <!-- Progress bar section -->
+        <% if (order.is_delivered==true || order.admin_cancelled==true || order.user_cancelled==true) { %>
 
-<div style="display: none;" id="order">
-    <table >
-        <thead >
-          <tr><br><br><br>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </th>
-            <th>&nbsp; &nbsp;&nbsp; &nbsp; Image</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Product Name</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Quantity</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</th>
-            <th>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Loop through order items -->
-          <% order.item.forEach(item => { %>
-            <tr>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
+            <div class="d-flex justify-content-around mb-1"><br><br>
+                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">
+                    Delivered</p>
+            </div>
+            <% } else { %>
 
-              <td><br><br>
-                <img src="/proImage/<%= item.product.image[0] %>" alt="Product Image" style="height: 70px;"></td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<%= item.product.title %></td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<%= item.quantity %></td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</td>
-              <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ₹ <%= item.price %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-      <!-- Progress bar section -->
-      <% if (order.is_delivered == true || order.admin_cancelled == true || order.user_cancelled == true) { %>
-        
-        <div class="d-flex justify-content-around mb-1"><br><br>
-            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-        </div>
-      <% } else { %>
-        
-        <div class="d-flex justify-content-around mb-1"><br><br>
-            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">On the way</p>
-        </div>
-      <% } %>
+                <div class="d-flex justify-content-around mb-1"><br><br>
+                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<p class="text-muted mt-1 mb-0 small ms-xl-5">On
+                        the way</p>
+                </div>
+                <% } %>
 
     </div>
 
@@ -190,15 +191,15 @@
 
 
 
-    
+
     <script>
-    function printTable() {
-        var table = document.getElementById("order");
-        var newWin = window.open('', 'Print-Window');
-        newWin.document.open();
-        newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
-        newWin.document.close();
-        setTimeout(function () { newWin.close(); }, 10);
-      }
+        function printTable() {
+            var table = document.getElementById("order");
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
+            newWin.document.close();
+            setTimeout(function () { newWin.close(); }, 10);
+        }
     </script>
     <%- include('../layouts/userFooter.ejs') %>
